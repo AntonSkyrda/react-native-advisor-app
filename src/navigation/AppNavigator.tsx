@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import SplashScreen from '../screens/SplashScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import type {RootStackParamList} from './types';
 
@@ -16,6 +17,7 @@ function AppNavigator(): React.JSX.Element {
         screenOptions={{headerShown: false}}>
         <RootStack.Screen name="Splash" component={SplashScreen} />
         <RootStack.Screen name="Welcome" component={WelcomeScreen} />
+        <RootStack.Screen name="SignUp" component={SignUpScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import BitcoinIcon from '../components/icons/BitcoinIcon';
+import BitcoinIcon from '../assets/icons/bitcoin-icon.svg';
 import WelcomeFeatureCard, {
   welcomeCardShadow,
 } from './welcome/WelcomeFeatureCard';

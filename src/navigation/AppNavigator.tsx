@@ -12,7 +12,7 @@ function AppNavigator(): React.JSX.Element {
   return (
     <NavigationContainer>
       <RootStack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Splash"
         screenOptions={{headerShown: false}}>
         <RootStack.Screen name="Splash" component={SplashScreen} />
         <RootStack.Screen name="Welcome" component={WelcomeScreen} />

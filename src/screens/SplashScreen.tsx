@@ -1,10 +1,30 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import BitcoinIcon from '../components/icons/BitcoinIcon';
+import BitcoinIcon from '../assets/icons/bitcoin-icon.svg';
+import type {RootStackParamList} from '../navigation/types';
+
+type SplashScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Splash'
+>;
+
+const splashDelay = 1600;
 
 function SplashScreen(): React.JSX.Element {
+  const navigation = useNavigation<SplashScreenNavigationProp>();
+
+  React.useEffect(() => {
+    const timerId = setTimeout(() => {
+      navigation.replace('Welcome');
+    }, splashDelay);
+
+    return () => clearTimeout(timerId);
+  }, [navigation]);
+
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.logoBox} accessibilityRole="image">

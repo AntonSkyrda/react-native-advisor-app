@@ -1,9 +1,48 @@
-# Dependencies
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+**/.xcode.env.local
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+*.hprof
+.cxx/
+*.keystore
+!debug.keystore
+.kotlin/
+
+# node.js
+#
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+*.log
 
 # Environment variables
 .env
@@ -11,58 +50,7 @@ pnpm-debug.log*
 !.env.example
 !.env.sample
 
-# React Native / Metro
-.expo/
-.expo-shared/
-dist/
-web-build/
-.metro-cache/
-
-# Android
-android/.gradle/
-android/app/build/
-android/build/
-android/.idea/
-android/local.properties
-*.apk
-*.aab
-
-# Android signing / secrets
-android/app/*.keystore
-android/app/*.jks
-android/keystores/
-google-services.json
-
-# iOS
-ios/Pods/
-ios/build/
-ios/DerivedData/
-ios/*.xcworkspace
-*.xcuserstate
-
-# Xcode user files
-ios/**/*.pbxuser
-ios/**/*.mode1v3
-ios/**/*.mode2v3
-ios/**/*.perspectivev3
-ios/**/*.xcuserdatad/
-ios/**/*.moved-aside
-ios/**/*.xcuserstate
-
-# macOS
-.DS_Store
-
-# Linux
-*~
-.cache/
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# IDEs / Editors
-.idea/
+# Editors
 .vscode/
 *.swp
 *.swo
@@ -70,22 +58,36 @@ Desktop.ini
 # TypeScript
 *.tsbuildinfo
 
-# Tests / coverage
-coverage/
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
 
-# Logs
-logs/
-*.log
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
-# Temporary files
-tmp/
-temp/
-
-# Fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output/
-
-# Bundle output
+# Bundle artifact
 *.jsbundle
+
+# Ruby / CocoaPods
+**/Pods/
+.bundle/
+/vendor/bundle/
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
+
+# testing
+/coverage
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

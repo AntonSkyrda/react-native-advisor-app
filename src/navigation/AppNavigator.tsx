@@ -7,6 +7,7 @@ import PinCodeScreen from '../features/auth/screens/PinCodeScreen';
 import SignUpScreen from '../features/auth/screens/SignUpScreen';
 import HomeScreen from '../features/home/screens/HomeScreen';
 import PostDetailsScreen from '../features/posts/screens/PostDetailsScreen';
+import SearchScreen from '../features/search/screens/SearchScreen';
 import WelcomeScreen from '../features/welcome/screens/WelcomeScreen';
 import SplashScreen from '../screens/SplashScreen';
 import type {RootStackParamList} from './types';
@@ -30,6 +31,7 @@ function AppNavigator(): React.JSX.Element {
           {() => <PinCodeScreen mode="unlock" />}
         </RootStack.Screen>
         <RootStack.Screen name="Home" component={HomeScreen} />
+        <RootStack.Screen name="Search" component={SearchScreen} />
         <RootStack.Screen name="PostDetails" component={PostDetailsScreen} />
       </RootStack.Navigator>
     </NavigationContainer>

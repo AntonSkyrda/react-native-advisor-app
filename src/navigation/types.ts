@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   PostDetails: {postId: number};
+  Search: undefined;
   Splash: undefined;
   UnlockPin: undefined;
   Welcome: undefined;

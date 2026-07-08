@@ -1,26 +1,15 @@
 import React from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import PostImage from '../../../assets/images/post-image.svg';
 import PrimaryButton from '../../../components/PrimaryButton';
 import {BackIcon} from '../../auth/sign-up/SignUpIcons';
-import {usePost, usePostComments} from '../hooks/usePosts';
-
-type PostDetailsRouteParams = {
-  PostDetails: {postId: number};
-};
-
-type PostDetailsRouteProp = RouteProp<PostDetailsRouteParams, 'PostDetails'>;
+import usePostDetailsScreen from '../hooks/usePostDetailsScreen';
 
 function PostDetailsScreen(): React.JSX.Element {
-  const navigation = useNavigation();
-  const {
-    params: {postId},
-  } = useRoute<PostDetailsRouteProp>();
-  const {data: post, error, isPending} = usePost(postId);
-  const {data: comments = []} = usePostComments(postId);
+  const {comments, errorMessage, handleBackPress, isPending, post} =
+    usePostDetailsScreen();
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -30,7 +19,7 @@ function PostDetailsScreen(): React.JSX.Element {
         <Pressable
           accessibilityRole="button"
           hitSlop={14}
-          onPress={() => navigation.goBack()}
+          onPress={handleBackPress}
           style={styles.backButton}>
           <BackIcon />
         </Pressable>
@@ -43,9 +32,7 @@ function PostDetailsScreen(): React.JSX.Element {
         <Text style={styles.sectionTitle}>About</Text>
         <View style={styles.aboutCard}>
           {isPending ? <Text style={styles.stateText}>Loading post...</Text> : null}
-          {error instanceof Error ? (
-            <Text style={styles.errorText}>{error.message}</Text>
-          ) : null}
+          {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
           {post ? (
             <>
               <Text style={styles.aboutTitle}>{post.title}</Text>
@@ -71,7 +58,7 @@ function PostDetailsScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={styles.footer}>
-        <PrimaryButton label="Back" onPress={() => navigation.goBack()} />
+        <PrimaryButton label="Back" onPress={handleBackPress} />
       </View>
     </SafeAreaView>
   );

@@ -1,28 +1,46 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 import HomeIcon from '../../../assets/icons/home-icon.svg';
 import PortfolioIcon from '../../../assets/icons/portfolio-icon.svg';
 import ProfileIcon from '../../../assets/icons/profile-bar-icon.svg';
 import SearchIcon from '../../../assets/icons/search-icon.svg';
 
-const items = [
-  {Icon: HomeIcon, active: true, label: 'Home'},
-  {Icon: PortfolioIcon, active: false, label: 'Portfolio'},
-  {Icon: SearchIcon, active: false, label: 'Search'},
-  {Icon: ProfileIcon, active: false, label: 'Profile'},
-];
+export type BottomBarItem = 'Home' | 'Portfolio' | 'Search' | 'Profile';
 
-function HomeBottomBar(): React.JSX.Element {
+const items = [
+  {Icon: HomeIcon, label: 'Home'},
+  {Icon: PortfolioIcon, label: 'Portfolio'},
+  {Icon: SearchIcon, label: 'Search'},
+  {Icon: ProfileIcon, label: 'Profile'},
+] as const;
+
+type HomeBottomBarProps = {
+  activeItem?: BottomBarItem;
+  onItemPress?: (item: BottomBarItem) => void;
+};
+
+function HomeBottomBar({
+  activeItem = 'Home',
+  onItemPress,
+}: HomeBottomBarProps): React.JSX.Element {
   return (
     <View style={styles.bar}>
-      {items.map(({Icon, active, label}) => (
-        <View key={label} style={styles.item}>
+      {items.map(({Icon, label}) => (
+        <Pressable
+          accessibilityRole="button"
+          key={label}
+          onPress={() => onItemPress?.(label)}
+          style={styles.item}>
           <Icon width={22} height={22} />
-          <Text style={[styles.label, active ? styles.labelActive : null]}>
+          <Text
+            style={[
+              styles.label,
+              activeItem === label ? styles.labelActive : null,
+            ]}>
             {label}
           </Text>
-        </View>
+        </Pressable>
       ))}
     </View>
   );

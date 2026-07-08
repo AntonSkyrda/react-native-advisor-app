@@ -38,7 +38,14 @@ function HomeScreen(): React.JSX.Element {
           />
         </View>
       </ScrollView>
-      <HomeBottomBar />
+      <HomeBottomBar
+        activeItem="Home"
+        onItemPress={item => {
+          if (item === 'Search') {
+            navigation.navigate('Search');
+          }
+        }}
+      />
     </SafeAreaView>
   );
 }

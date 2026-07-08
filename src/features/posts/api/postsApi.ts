@@ -9,6 +9,15 @@ export async function getPosts(limit = 3): Promise<Post[]> {
   return data;
 }
 
+export async function searchPosts(search: string): Promise<Post[]> {
+  const query = search.trim();
+  const {data} = await postsApiClient.get<Post[]>('/posts', {
+    params: query ? {q: query} : {_limit: 10},
+  });
+
+  return data;
+}
+
 export async function getPost(postId: number): Promise<Post> {
   const {data} = await postsApiClient.get<Post>(`/posts/${postId}`);
 

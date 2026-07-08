@@ -1,15 +1,18 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 const cards = [
-  {backgroundColor: '#5C5C5C', steps: '2 steps'},
-  {backgroundColor: '#F05C6A', steps: '3 steps'},
+  {backgroundColor: '#5C5C5C', steps: 2},
+  {backgroundColor: '#F05C6A', steps: 3},
 ];
 
 function BeforeYouStart(): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Before you Start</Text>
+      <Text style={styles.sectionTitle}>{t('home.beforeStart')}</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -21,9 +24,11 @@ function BeforeYouStart(): React.JSX.Element {
             <View style={styles.coin}>
               <Text style={styles.coinText}>...</Text>
             </View>
-            <Text style={styles.cardTitle}>Lorem ipsum</Text>
-            <Text style={styles.cardSubtitle}>lorem ipsum</Text>
-            <Text style={styles.steps}>{card.steps}</Text>
+            <Text style={styles.cardTitle}>{t('home.cardTitle')}</Text>
+            <Text style={styles.cardSubtitle}>{t('home.cardSubtitle')}</Text>
+            <Text style={styles.steps}>
+              {t('home.steps', {count: card.steps})}
+            </Text>
           </View>
         ))}
       </ScrollView>

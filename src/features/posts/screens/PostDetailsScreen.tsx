@@ -1,6 +1,7 @@
 import React from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
 
 import PostImage from '../../../assets/images/post-image.svg';
 import PrimaryButton from '../../../components/PrimaryButton';
@@ -8,6 +9,7 @@ import {BackIcon} from '../../auth/sign-up/SignUpIcons';
 import usePostDetailsScreen from '../hooks/usePostDetailsScreen';
 
 function PostDetailsScreen(): React.JSX.Element {
+  const {t} = useTranslation();
   const {comments, errorMessage, handleBackPress, isPending, post} =
     usePostDetailsScreen();
 
@@ -24,14 +26,16 @@ function PostDetailsScreen(): React.JSX.Element {
           <BackIcon />
         </Pressable>
 
-        <Text style={styles.title}>Post name</Text>
+        <Text style={styles.title}>{t('posts.postName')}</Text>
         <View style={styles.imageWrap}>
           <PostImage width="100%" height={170} />
         </View>
 
-        <Text style={styles.sectionTitle}>About</Text>
+        <Text style={styles.sectionTitle}>{t('posts.about')}</Text>
         <View style={styles.aboutCard}>
-          {isPending ? <Text style={styles.stateText}>Loading post...</Text> : null}
+          {isPending ? (
+            <Text style={styles.stateText}>{t('posts.loadingPost')}</Text>
+          ) : null}
           {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
           {post ? (
             <>
@@ -41,7 +45,7 @@ function PostDetailsScreen(): React.JSX.Element {
           ) : null}
         </View>
 
-        <Text style={styles.commentsTitle}>Comments</Text>
+        <Text style={styles.commentsTitle}>{t('posts.comments')}</Text>
         {comments.slice(0, 3).map(comment => (
           <View key={comment.id} style={styles.commentCard}>
             <Text numberOfLines={1} style={styles.commentName}>
@@ -58,7 +62,7 @@ function PostDetailsScreen(): React.JSX.Element {
       </ScrollView>
 
       <View style={styles.footer}>
-        <PrimaryButton label="Back" onPress={handleBackPress} />
+        <PrimaryButton label={t('posts.back')} onPress={handleBackPress} />
       </View>
     </SafeAreaView>
   );

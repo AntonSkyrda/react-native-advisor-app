@@ -1,6 +1,7 @@
 import {useCallback, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
 
 import type {RootStackParamList} from '../../../navigation/types';
 import {useAppDispatch} from '../../../store/hooks';
@@ -17,6 +18,7 @@ const pinLength = 5;
 function useCreatePinScreen() {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<CreatePinScreenNavigationProp>();
+  const {t} = useTranslation();
   const [confirmedPin, setConfirmedPin] = useState('');
   const [error, setError] = useState<string>();
   const [isSaving, setIsSaving] = useState(false);
@@ -66,7 +68,7 @@ function useCreatePinScreen() {
   const submitPin = useCallback(async () => {
     if (step === 'create') {
       if (pin.length < pinLength) {
-        setError('Enter 5 digits');
+        setError(t('auth.pinRequired', {count: pinLength}));
         return;
       }
 
@@ -77,12 +79,12 @@ function useCreatePinScreen() {
     }
 
     if (confirmedPin.length < pinLength) {
-      setError('Confirm 5 digits');
+      setError(t('auth.pinConfirmRequired', {count: pinLength}));
       return;
     }
 
     if (confirmedPin !== pin) {
-      setError('PIN codes do not match');
+      setError(t('auth.pinMismatch'));
       setConfirmedPin('');
       return;
     }
@@ -97,11 +99,11 @@ function useCreatePinScreen() {
         routes: [{name: 'Home'}],
       });
     } catch {
-      setError('Unable to save PIN on this device');
+      setError(t('auth.pinSaveFailed'));
     } finally {
       setIsSaving(false);
     }
-  }, [confirmedPin, dispatch, navigation, pin, step]);
+  }, [confirmedPin, dispatch, navigation, pin, step, t]);
 
   return {
     appendDigit,

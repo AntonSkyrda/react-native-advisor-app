@@ -20,14 +20,14 @@ export type WelcomeCardName = 'one' | 'two' | 'three' | 'four' | 'five';
 
 export type WelcomeCardConfig = {
   coins: WelcomeCoin[];
-  label: string;
+  labelKey: string;
   position: WelcomeCardName;
 };
 
 export const welcomeCards: WelcomeCardConfig[] = [
   {
     position: 'one',
-    label: 'Lorem ipsum 2',
+    labelKey: 'welcome.cardOne',
     coins: [
       {backgroundColor: '#7ED7C9', content: <ProfileIcon width={22} height={22} />},
       {backgroundColor: '#FF873D', content: <HandIcon width={21} height={17} />},
@@ -36,7 +36,7 @@ export const welcomeCards: WelcomeCardConfig[] = [
   },
   {
     position: 'two',
-    label: 'Lorem ipsum',
+    labelKey: 'welcome.cardTwo',
     coins: [
       {backgroundColor: '#9BDDE4', content: <CraneIcon width={21} height={21} />},
       {backgroundColor: '#5A9BF8', content: <BuildingIcon width={18} height={20} />},
@@ -45,7 +45,7 @@ export const welcomeCards: WelcomeCardConfig[] = [
   },
   {
     position: 'three',
-    label: 'Lorem ipsum 4',
+    labelKey: 'welcome.cardThree',
     coins: [
       {backgroundColor: '#F7D16D', content: <DropIcon width={15} height={20} />},
       {backgroundColor: '#CB9655', content: <BarsIcon width={40} height={40} />},
@@ -54,7 +54,7 @@ export const welcomeCards: WelcomeCardConfig[] = [
   },
   {
     position: 'four',
-    label: 'Lorem ipsum 3',
+    labelKey: 'welcome.cardFour',
     coins: [
       {backgroundColor: '#5F70B2', content: <InvescoLogo width={22} height={19} />},
       {backgroundColor: '#A91720', content: <VLogo width={23} height={24} />},
@@ -63,7 +63,7 @@ export const welcomeCards: WelcomeCardConfig[] = [
   },
   {
     position: 'five',
-    label: 'Lorem ipsum 5',
+    labelKey: 'welcome.cardFive',
     coins: [
       {backgroundColor: '#8794EA', content: <CrystalIcon width={16} height={25} />},
       {

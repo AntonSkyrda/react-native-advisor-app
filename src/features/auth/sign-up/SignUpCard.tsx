@@ -1,38 +1,42 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import type {Control, FieldErrors} from 'react-hook-form';
+import type {Control, FieldErrors, RegisterOptions} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
 
 import HidePasswordIcon from '../../../assets/icons/hide-password.svg';
 import ShowPasswordIcon from '../../../assets/icons/show-password.svg';
 import SignUpIcon from '../../../assets/icons/sign-up-icon.svg';
 import SignUpField from './SignUpField';
-import {
-  emailRules,
-  nameRules,
-  passwordRules,
-  type SignUpFormValues,
-} from './signUpForm';
+import type {SignUpFormValues} from './signUpForm';
 
 type SignUpCardProps = {
   control: Control<SignUpFormValues>;
+  emailRules: RegisterOptions<SignUpFormValues, 'email'>;
   errors: FieldErrors<SignUpFormValues>;
+  nameRules: RegisterOptions<SignUpFormValues, 'name'>;
   onTogglePassword: () => void;
+  passwordRules: RegisterOptions<SignUpFormValues, 'password'>;
   passwordVisible: boolean;
 };
 
 function SignUpCard({
   control,
+  emailRules,
   errors,
+  nameRules,
   onTogglePassword,
+  passwordRules,
   passwordVisible,
 }: SignUpCardProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <SignUpIcon width={49} height={53} style={styles.accountIcon} />
         <View>
-          <Text style={styles.title}>Sign up</Text>
-          <Text style={styles.subtitle}>Personal Account</Text>
+          <Text style={styles.title}>{t('auth.signUpTitle')}</Text>
+          <Text style={styles.subtitle}>{t('auth.accountSubtitle')}</Text>
         </View>
       </View>
 
@@ -41,7 +45,7 @@ function SignUpCard({
           autoCapitalize="words"
           control={control}
           error={errors.name?.message}
-          label="Name"
+          label={t('auth.name')}
           name="name"
           rules={nameRules}
           textContentType="name"
@@ -51,7 +55,7 @@ function SignUpCard({
           control={control}
           error={errors.email?.message}
           keyboardType="email-address"
-          label="E-mail"
+          label={t('auth.email')}
           name="email"
           rules={emailRules}
           textContentType="emailAddress"
@@ -60,7 +64,7 @@ function SignUpCard({
           autoCapitalize="none"
           control={control}
           error={errors.password?.message}
-          label="Password"
+          label={t('auth.password')}
           name="password"
           rightElement={
             <Pressable

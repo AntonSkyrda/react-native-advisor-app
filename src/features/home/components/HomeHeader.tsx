@@ -1,14 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 type HomeHeaderProps = {
   userName: string;
 };
 
 function HomeHeader({userName}: HomeHeaderProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.header}>
-      <Text style={styles.eyebrow}>Your name</Text>
+      <Text style={styles.eyebrow}>{t('home.userLabel')}</Text>
       <Text style={styles.name}>{userName}</Text>
     </View>
   );

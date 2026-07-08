@@ -7,6 +7,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import PrimaryButton from '../../../components/PrimaryButton';
@@ -26,6 +27,7 @@ function PinCodeScreen({mode}: PinCodeScreenProps): React.JSX.Element {
 }
 
 function CreatePinMode(): React.JSX.Element {
+  const {t} = useTranslation();
   const {
     appendDigit,
     error,
@@ -40,7 +42,7 @@ function CreatePinMode(): React.JSX.Element {
 
   return (
     <PinCodeLayout
-      footerLabel={isSaving ? 'Saving...' : 'Continue'}
+      footerLabel={isSaving ? t('auth.saving') : t('common.continue')}
       footerDisabled={isSaving}
       header={
         <>
@@ -54,9 +56,11 @@ function CreatePinMode(): React.JSX.Element {
           <PinHeader
             error={error}
             pinLength={pinLength}
-            subtitle="enter 5 digit code:"
+            subtitle={t('auth.enterPin', {count: pinLength})}
             title={
-              step === 'create' ? 'Create a Pin code' : 'Repeat a Pin code'
+              step === 'create'
+                ? t('auth.createPinTitle')
+                : t('auth.confirmPinTitle')
             }
             valueLength={value.length}
           />
@@ -70,6 +74,7 @@ function CreatePinMode(): React.JSX.Element {
 }
 
 function UnlockPinMode(): React.JSX.Element {
+  const {t} = useTranslation();
   const {
     appendDigit,
     biometryLabel,
@@ -88,7 +93,7 @@ function UnlockPinMode(): React.JSX.Element {
   return (
     <PinCodeLayout
       contentStyle={styles.unlockContent}
-      footerLabel={isChecking ? 'Checking...' : 'Continue'}
+      footerLabel={isChecking ? t('auth.checking') : t('common.continue')}
       footerDisabled={isChecking}
       header={
         <>
@@ -104,7 +109,9 @@ function UnlockPinMode(): React.JSX.Element {
               accessibilityRole="button"
               onPress={loginWithBiometry}
               style={styles.biometryButton}>
-              <Text style={styles.biometryText}>Use {biometryLabel}</Text>
+              <Text style={styles.biometryText}>
+                {t('auth.useBiometry', {label: biometryLabel})}
+              </Text>
             </Pressable>
           ) : null}
         </>

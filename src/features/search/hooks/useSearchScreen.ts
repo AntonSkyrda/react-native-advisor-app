@@ -9,6 +9,7 @@ type SearchStackParamList = {
   Home: undefined;
   PostDetails: {postId: number};
   Search: undefined;
+  Settings: undefined;
 };
 
 type SearchScreenNavigationProp = NativeStackNavigationProp<
@@ -29,6 +30,10 @@ function useSearchScreen() {
   const handleBottomBarPress = (item: BottomBarItem) => {
     if (item === 'Home') {
       navigation.navigate('Home');
+    }
+
+    if (item === 'Profile') {
+      navigation.navigate('Settings');
     }
   };
 

@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useMutation} from '@tanstack/react-query';
 import {useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
 
 import {loginUser} from '../api/authApi';
 import {
@@ -15,7 +16,12 @@ import {
 import {authSessionDetected, authUnlocked} from '../store/authSlice';
 import type {RootStackParamList} from '../../../navigation/types';
 import {useAppDispatch} from '../../../store/hooks';
-import {loginDefaultValues, type LoginFormValues} from './loginForm';
+import {
+  getLoginPasswordRules,
+  getUsernameRules,
+  loginDefaultValues,
+  type LoginFormValues,
+} from './loginForm';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -25,6 +31,9 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<
 function useLoginScreen() {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<LoginScreenNavigationProp>();
+  const {t} = useTranslation();
+  const passwordRules = getLoginPasswordRules(t);
+  const usernameRules = getUsernameRules(t);
   const [biometryLabel, setBiometryLabel] = useState<string | null>(null);
   const [hasPin, setHasPin] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -111,9 +120,12 @@ function useLoginScreen() {
         });
       }
     } catch {
-      Alert.alert('Biometric login failed', 'Try again or use password login.');
+      Alert.alert(
+        t('auth.biometricLoginFailedTitle'),
+        t('auth.biometricLoginFailedPasswordMessage'),
+      );
     }
-  }, [dispatch, navigation]);
+  }, [dispatch, navigation, t]);
 
   return {
     biometryLabel,
@@ -125,12 +137,14 @@ function useLoginScreen() {
     isLoading: loginMutation.isPending,
     loginWithBiometry,
     passwordVisible,
+    passwordRules,
     submitError:
       loginMutation.error instanceof Error
         ? loginMutation.error.message
         : undefined,
     submitLogin: handleSubmit(submitLogin),
     togglePasswordVisibility,
+    usernameRules,
   };
 }
 

@@ -12,6 +12,8 @@ import {
 } from './src/lib/queryClient';
 import AppNavigator from './src/navigation/AppNavigator';
 import {persistor, store} from './src/store/store';
+import './src/i18n/i18n';
+import LanguageSync from './src/i18n/LanguageSync';
 
 function App(): React.JSX.Element {
   return (
@@ -22,6 +24,7 @@ function App(): React.JSX.Element {
             client={queryClient}
             persistOptions={{persister: asyncStoragePersister}}>
             <SafeAreaProvider>
+              <LanguageSync />
               <View style={styles.container}>
                 <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
                 <AppNavigator />

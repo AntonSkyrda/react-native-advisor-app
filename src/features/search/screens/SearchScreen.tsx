@@ -9,12 +9,14 @@ import {
   View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
 
 import SearchIcon from '../../../assets/icons/search-icon.svg';
 import HomeBottomBar from '../../home/components/HomeBottomBar';
 import useSearchScreen from '../hooks/useSearchScreen';
 
 function SearchScreen(): React.JSX.Element {
+  const {t} = useTranslation();
   const {
     errorMessage,
     handleBottomBarPress,
@@ -31,14 +33,14 @@ function SearchScreen(): React.JSX.Element {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Search</Text>
+        <Text style={styles.title}>{t('search.title')}</Text>
         <View style={styles.searchBox}>
           <SearchIcon width={18} height={18} />
           <TextInput
             autoCapitalize="none"
             autoCorrect={false}
             onChangeText={setSearch}
-            placeholder="Search Products..."
+            placeholder={t('search.placeholder')}
             placeholderTextColor="#A1A7B2"
             returnKeyType="search"
             style={styles.searchInput}
@@ -54,7 +56,7 @@ function SearchScreen(): React.JSX.Element {
             <Text style={styles.errorText}>{errorMessage}</Text>
           ) : null}
           {!isLoading && !errorMessage && posts.length === 0 ? (
-            <Text style={styles.emptyText}>No posts found</Text>
+            <Text style={styles.emptyText}>{t('search.empty')}</Text>
           ) : null}
           {posts.map(post => (
             <Pressable
@@ -62,9 +64,9 @@ function SearchScreen(): React.JSX.Element {
               key={post.id}
               onPress={() => handlePostPress(post.id)}
               style={styles.resultCard}>
-              <Text style={styles.postId}>ID: {post.id}</Text>
+              <Text style={styles.postId}>{t('search.id', {id: post.id})}</Text>
               <Text numberOfLines={1} style={styles.postName}>
-                Name: {post.title}
+                {t('search.name', {name: post.title})}
               </Text>
             </Pressable>
           ))}

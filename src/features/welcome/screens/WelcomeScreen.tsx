@@ -2,6 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import BitcoinIcon from '../../../assets/icons/bitcoin-icon.svg';
@@ -27,6 +28,7 @@ const cardPositions: Record<WelcomeCardName, object> = {
 
 function WelcomeScreen(): React.JSX.Element {
   const navigation = useNavigation<WelcomeScreenNavigationProp>();
+  const {t} = useTranslation();
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -40,7 +42,7 @@ function WelcomeScreen(): React.JSX.Element {
         {welcomeCards.map(card => (
           <WelcomeFeatureCard
             key={card.position}
-            label={card.label}
+            label={t(card.labelKey)}
             coins={card.coins}
             style={cardPositions[card.position]}
           />
@@ -51,10 +53,10 @@ function WelcomeScreen(): React.JSX.Element {
             accessibilityRole="button"
             onPress={() => navigation.navigate('Login')}
             style={styles.signInButton}>
-            <Text style={styles.signInText}>Sign In</Text>
+            <Text style={styles.signInText}>{t('welcome.signIn')}</Text>
           </Pressable>
           <PrimaryButton
-            label="Sign up"
+            label={t('welcome.signUp')}
             onPress={() => navigation.navigate('SignUp')}
           />
         </View>

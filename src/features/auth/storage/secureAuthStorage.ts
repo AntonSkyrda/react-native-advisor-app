@@ -1,4 +1,5 @@
 import * as Keychain from 'react-native-keychain';
+import i18n from 'i18next';
 
 import type {AuthUser} from '../types/authTypes';
 
@@ -10,6 +11,7 @@ type StoredAuthSession = {
   accessToken: string;
   email?: string;
   firstName?: string;
+  image?: string;
   lastName?: string;
   refreshToken: string;
   userId: number;
@@ -26,6 +28,7 @@ export async function saveAuthSession(user: AuthUser): Promise<void> {
     accessToken: user.accessToken,
     email: user.email,
     firstName: user.firstName,
+    image: user.image,
     lastName: user.lastName,
     refreshToken: user.refreshToken,
     userId: user.id,
@@ -88,9 +91,9 @@ export async function savePinCode(pin: string): Promise<void> {
     accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
     accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
     authenticationPrompt: {
-      title: 'Enable biometric login',
-      subtitle: 'Use your device unlock to protect app access',
-      cancel: 'Cancel',
+      title: i18n.t('auth.enableBiometricLoginTitle'),
+      subtitle: i18n.t('auth.enableBiometricLoginSubtitle'),
+      cancel: i18n.t('auth.cancel'),
     },
     service: biometricPinService,
   });
@@ -108,9 +111,9 @@ export async function getPinWithBiometry(): Promise<string | null> {
   const credentials = await Keychain.getGenericPassword({
     accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
     authenticationPrompt: {
-      title: 'Sign in',
-      subtitle: 'Use Face ID or biometrics',
-      cancel: 'Cancel',
+      title: i18n.t('auth.signInBiometricTitle'),
+      subtitle: i18n.t('auth.signInBiometricSubtitle'),
+      cancel: i18n.t('auth.cancel'),
     },
     service: biometricPinService,
   });
@@ -138,8 +141,8 @@ export async function getSupportedBiometryLabel(): Promise<string | null> {
   }
 
   if (biometryType === Keychain.BIOMETRY_TYPE.FACE_ID) {
-    return 'Face ID';
+    return i18n.t('auth.faceId');
   }
 
-  return 'Biometrics';
+  return i18n.t('auth.arabicBiometrics');
 }

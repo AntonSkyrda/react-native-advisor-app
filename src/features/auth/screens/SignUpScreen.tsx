@@ -16,9 +16,12 @@ import useSignUpScreen from '../sign-up/useSignUpScreen';
 function SignUpScreen(): React.JSX.Element {
   const {
     control,
+    emailRules,
     errors,
     goBack,
     isValid,
+    nameRules,
+    passwordRules,
     passwordVisible,
     submitForm,
     togglePasswordVisibility,
@@ -43,8 +46,11 @@ function SignUpScreen(): React.JSX.Element {
 
           <SignUpCard
             control={control}
+            emailRules={emailRules}
             errors={errors}
+            nameRules={nameRules}
             onTogglePassword={togglePasswordVisibility}
+            passwordRules={passwordRules}
             passwordVisible={passwordVisible}
           />
         </ScrollView>

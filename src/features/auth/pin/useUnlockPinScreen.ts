@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useTranslation} from 'react-i18next';
 
 import {
   clearAuthStorage,
@@ -25,6 +26,7 @@ const pinLength = 5;
 function useUnlockPinScreen() {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<UnlockPinScreenNavigationProp>();
+  const {t} = useTranslation();
   const [biometryLabel, setBiometryLabel] = useState<string | null>(null);
   const [hasSavedBiometry, setHasSavedBiometry] = useState(false);
   const [error, setError] = useState<string>();
@@ -86,7 +88,7 @@ function useUnlockPinScreen() {
 
   const submitPin = useCallback(async () => {
     if (value.length < pinLength) {
-      setError('Enter 5 digits');
+      setError(t('auth.pinRequired', {count: pinLength}));
       return;
     }
 
@@ -101,13 +103,13 @@ function useUnlockPinScreen() {
       }
 
       setValue('');
-      setError('Invalid PIN code');
+      setError(t('auth.pinInvalid'));
     } catch {
-      setError('Unable to verify PIN');
+      setError(t('auth.pinVerifyFailed'));
     } finally {
       setIsChecking(false);
     }
-  }, [unlockApp, value]);
+  }, [t, unlockApp, value]);
 
   const loginWithBiometry = useCallback(async () => {
     try {
@@ -117,9 +119,12 @@ function useUnlockPinScreen() {
         unlockApp();
       }
     } catch {
-      Alert.alert('Biometric login failed', 'Try again or use PIN code.');
+      Alert.alert(
+        t('auth.biometricLoginFailedTitle'),
+        t('auth.biometricLoginFailedPinMessage'),
+      );
     }
-  }, [unlockApp]);
+  }, [t, unlockApp]);
 
   const changeAccount = useCallback(async () => {
     await clearAuthStorage();

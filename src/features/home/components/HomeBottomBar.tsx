@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import HomeIcon from '../../../assets/icons/home-icon.svg';
 import PortfolioIcon from '../../../assets/icons/portfolio-icon.svg';
@@ -9,10 +10,10 @@ import SearchIcon from '../../../assets/icons/search-icon.svg';
 export type BottomBarItem = 'Home' | 'Portfolio' | 'Search' | 'Profile';
 
 const items = [
-  {Icon: HomeIcon, label: 'Home'},
-  {Icon: PortfolioIcon, label: 'Portfolio'},
-  {Icon: SearchIcon, label: 'Search'},
-  {Icon: ProfileIcon, label: 'Profile'},
+  {Icon: HomeIcon, label: 'Home', translationKey: 'bottomBar.home'},
+  {Icon: PortfolioIcon, label: 'Portfolio', translationKey: 'bottomBar.portfolio'},
+  {Icon: SearchIcon, label: 'Search', translationKey: 'bottomBar.search'},
+  {Icon: ProfileIcon, label: 'Profile', translationKey: 'bottomBar.profile'},
 ] as const;
 
 type HomeBottomBarProps = {
@@ -24,9 +25,11 @@ function HomeBottomBar({
   activeItem = 'Home',
   onItemPress,
 }: HomeBottomBarProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.bar}>
-      {items.map(({Icon, label}) => (
+      {items.map(({Icon, label, translationKey}) => (
         <Pressable
           accessibilityRole="button"
           key={label}
@@ -38,7 +41,7 @@ function HomeBottomBar({
               styles.label,
               activeItem === label ? styles.labelActive : null,
             ]}>
-            {label}
+            {t(translationKey)}
           </Text>
         </Pressable>
       ))}

@@ -1,12 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 function PersonalAdvisorCard(): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>Test task</Text>
-      <Text style={styles.subtitle}>Lorem ipsum</Text>
-      <Text style={styles.action}>Go to call</Text>
+      <Text style={styles.title}>{t('home.advisorTitle')}</Text>
+      <Text style={styles.subtitle}>{t('home.advisorSubtitle')}</Text>
+      <Text style={styles.action}>{t('home.advisorAction')}</Text>
     </View>
   );
 }

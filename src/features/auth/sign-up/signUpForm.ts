@@ -1,4 +1,5 @@
 import type {RegisterOptions} from 'react-hook-form';
+import type {TFunction} from 'i18next';
 
 export type SignUpFormValues = {
   name: string;
@@ -16,31 +17,43 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?`~]).{8,64}$/;
 
-export const nameRules: RegisterOptions<SignUpFormValues, 'name'> = {
-  required: 'Name is required',
-  validate: value => value.trim().length > 0 || 'Name is required',
-};
+export function getNameRules(
+  t: TFunction,
+): RegisterOptions<SignUpFormValues, 'name'> {
+  return {
+    required: t('auth.nameRequired'),
+    validate: value => value.trim().length > 0 || t('auth.nameRequired'),
+  };
+}
 
-export const emailRules: RegisterOptions<SignUpFormValues, 'email'> = {
-  required: 'E-mail is required',
-  pattern: {
-    value: emailPattern,
-    message: 'Enter a valid e-mail',
-  },
-};
+export function getEmailRules(
+  t: TFunction,
+): RegisterOptions<SignUpFormValues, 'email'> {
+  return {
+    required: t('auth.emailRequired'),
+    pattern: {
+      value: emailPattern,
+      message: t('auth.emailInvalid'),
+    },
+  };
+}
 
-export const passwordRules: RegisterOptions<SignUpFormValues, 'password'> = {
-  required: 'Password is required',
-  minLength: {
-    value: 8,
-    message: 'Use 8-64 characters',
-  },
-  maxLength: {
-    value: 64,
-    message: 'Use 8-64 characters',
-  },
-  pattern: {
-    value: passwordPattern,
-    message: 'Use uppercase, lowercase and special character',
-  },
-};
+export function getPasswordRules(
+  t: TFunction,
+): RegisterOptions<SignUpFormValues, 'password'> {
+  return {
+    required: t('auth.passwordRequired'),
+    minLength: {
+      value: 8,
+      message: t('auth.passwordSize'),
+    },
+    maxLength: {
+      value: 64,
+      message: t('auth.passwordSize'),
+    },
+    pattern: {
+      value: passwordPattern,
+      message: t('auth.passwordStrength'),
+    },
+  };
+}

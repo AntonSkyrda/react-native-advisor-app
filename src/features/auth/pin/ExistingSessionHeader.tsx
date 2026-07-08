@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import ProfileIcon from '../../../assets/icons/profile.svg';
 import PinDots from './PinDots';
@@ -19,6 +20,8 @@ function ExistingSessionHeader({
   userLabel,
   valueLength,
 }: ExistingSessionHeaderProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.header}>
       <View style={styles.profileIcon}>
@@ -29,10 +32,12 @@ function ExistingSessionHeader({
         accessibilityRole="button"
         onPress={onChangeAccount}
         style={styles.changeButton}>
-        <Text style={styles.changeText}>Change Account</Text>
+        <Text style={styles.changeText}>{t('auth.changeAccount')}</Text>
       </Pressable>
 
-      <Text style={styles.subtitle}>Enter {pinLength} digit code:</Text>
+      <Text style={styles.subtitle}>
+        {t('auth.enterPinCapitalized', {count: pinLength})}
+      </Text>
       <PinDots
         hasError={Boolean(error)}
         length={pinLength}

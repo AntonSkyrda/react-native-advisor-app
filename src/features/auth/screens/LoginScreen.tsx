@@ -23,9 +23,11 @@ function LoginScreen(): React.JSX.Element {
     isLoading,
     loginWithBiometry,
     passwordVisible,
+    passwordRules,
     submitError,
     submitLogin,
     togglePasswordVisibility,
+    usernameRules,
   } = useLoginScreen();
 
   return (
@@ -56,7 +58,9 @@ function LoginScreen(): React.JSX.Element {
             onSubmit={submitLogin}
             onTogglePassword={togglePasswordVisibility}
             passwordVisible={passwordVisible}
+            passwordRules={passwordRules}
             submitError={submitError}
+            usernameRules={usernameRules}
           />
         </ScrollView>
       </KeyboardAvoidingView>

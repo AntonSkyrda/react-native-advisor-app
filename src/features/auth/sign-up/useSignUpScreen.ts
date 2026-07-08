@@ -2,9 +2,16 @@ import {useCallback, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
 
 import type {RootStackParamList} from '../../../navigation/types';
-import {signUpDefaultValues, type SignUpFormValues} from './signUpForm';
+import {
+  getEmailRules,
+  getNameRules,
+  getPasswordRules,
+  signUpDefaultValues,
+  type SignUpFormValues,
+} from './signUpForm';
 
 type SignUpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -13,6 +20,10 @@ type SignUpScreenNavigationProp = NativeStackNavigationProp<
 
 function useSignUpScreen() {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
+  const {t} = useTranslation();
+  const emailRules = getEmailRules(t);
+  const nameRules = getNameRules(t);
+  const passwordRules = getPasswordRules(t);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const {
     control,
@@ -47,9 +58,12 @@ function useSignUpScreen() {
 
   return {
     control,
+    emailRules,
     errors,
     goBack,
     isValid,
+    nameRules,
+    passwordRules,
     passwordVisible,
     submitForm: handleSubmit(submitForm),
     togglePasswordVisibility,

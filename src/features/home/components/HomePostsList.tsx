@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import type {Post} from '../../posts/types/postTypes';
 
@@ -16,10 +17,14 @@ function HomePostsList({
   onPostPress,
   posts,
 }: HomePostsListProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Posts</Text>
-      {loading ? <Text style={styles.stateText}>Loading posts...</Text> : null}
+      <Text style={styles.sectionTitle}>{t('home.posts')}</Text>
+      {loading ? (
+        <Text style={styles.stateText}>{t('home.loadingPosts')}</Text>
+      ) : null}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
       {posts.map(post => (
         <Pressable

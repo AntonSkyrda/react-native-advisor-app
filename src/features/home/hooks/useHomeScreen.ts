@@ -1,10 +1,12 @@
 import {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 
 import {getAuthSession} from '../../auth/storage/secureAuthStorage';
 import {usePosts} from '../../posts/hooks/usePosts';
 
 function useHomeScreen() {
-  const [userName, setUserName] = useState('Your name');
+  const {t} = useTranslation();
+  const [userName, setUserName] = useState(t('home.userFallback'));
   const postsQuery = usePosts(3);
 
   useEffect(() => {
@@ -17,19 +19,19 @@ function useHomeScreen() {
             .filter(Boolean)
             .join(' ');
 
-          setUserName(fullName || session.username);
+          setUserName(fullName || session.username || t('home.userFallback'));
         }
       })
       .catch(() => {
         if (isMounted) {
-          setUserName('Your name');
+          setUserName(t('home.userFallback'));
         }
       });
 
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [t]);
 
   return {
     posts: postsQuery.data ?? [],

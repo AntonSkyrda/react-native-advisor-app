@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import PrimaryButton from '../../../components/PrimaryButton';
 
@@ -12,9 +13,15 @@ function SignUpContinueButton({
   disabled,
   onPress,
 }: SignUpContinueButtonProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.footer}>
-      <PrimaryButton disabled={disabled} label="Continue" onPress={onPress} />
+      <PrimaryButton
+        disabled={disabled}
+        label={t('common.continue')}
+        onPress={onPress}
+      />
     </View>
   );
 }

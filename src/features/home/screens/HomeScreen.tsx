@@ -44,6 +44,10 @@ function HomeScreen(): React.JSX.Element {
           if (item === 'Search') {
             navigation.navigate('Search');
           }
+
+          if (item === 'Profile') {
+            navigation.navigate('Settings');
+          }
         }}
       />
     </SafeAreaView>

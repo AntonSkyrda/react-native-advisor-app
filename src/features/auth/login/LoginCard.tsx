@@ -1,17 +1,14 @@
 import React from 'react';
 import {ActivityIndicator, Pressable, StyleSheet, Text, View} from 'react-native';
-import type {Control, FieldErrors} from 'react-hook-form';
+import type {Control, FieldErrors, RegisterOptions} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
 
 import HidePasswordIcon from '../../../assets/icons/hide-password.svg';
 import ShowPasswordIcon from '../../../assets/icons/show-password.svg';
 import SignInIcon from '../../../assets/icons/sign-in-icon.svg';
 import PrimaryButton from '../../../components/PrimaryButton';
 import LoginField from './LoginField';
-import {
-  loginPasswordRules,
-  type LoginFormValues,
-  usernameRules,
-} from './loginForm';
+import type {LoginFormValues} from './loginForm';
 
 type LoginCardProps = {
   biometryLabel: string | null;
@@ -24,7 +21,9 @@ type LoginCardProps = {
   onSubmit: () => void;
   onTogglePassword: () => void;
   passwordVisible: boolean;
+  passwordRules: RegisterOptions<LoginFormValues, 'password'>;
   submitError?: string;
+  usernameRules: RegisterOptions<LoginFormValues, 'username'>;
 };
 
 function LoginCard({
@@ -38,15 +37,19 @@ function LoginCard({
   onSubmit,
   onTogglePassword,
   passwordVisible,
+  passwordRules,
   submitError,
+  usernameRules,
 }: LoginCardProps): React.JSX.Element {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <SignInIcon width={49} height={49} style={styles.accountIcon} />
         <View>
-          <Text style={styles.title}>Login</Text>
-          <Text style={styles.subtitle}>Personal Account</Text>
+          <Text style={styles.title}>{t('auth.loginTitle')}</Text>
+          <Text style={styles.subtitle}>{t('auth.accountSubtitle')}</Text>
         </View>
       </View>
 
@@ -56,7 +59,7 @@ function LoginCard({
           control={control}
           error={errors.username?.message}
           keyboardType="email-address"
-          label="Email"
+          label={t('auth.email')}
           name="username"
           placeholder="emilys"
           rules={usernameRules}
@@ -66,7 +69,7 @@ function LoginCard({
           autoCapitalize="none"
           control={control}
           error={errors.password?.message}
-          label="Password"
+          label={t('auth.password')}
           name="password"
           placeholder="emilyspass"
           rightElement={
@@ -81,7 +84,7 @@ function LoginCard({
               )}
             </Pressable>
           }
-          rules={loginPasswordRules}
+          rules={passwordRules}
           secureTextEntry={!passwordVisible}
           textContentType="password"
         />
@@ -90,7 +93,7 @@ function LoginCard({
 
         <PrimaryButton
           disabled={isLoading}
-          label={isLoading ? 'Signing in...' : 'Continue'}
+          label={isLoading ? t('auth.signingIn') : t('common.continue')}
           onPress={onSubmit}
         />
 
@@ -101,7 +104,9 @@ function LoginCard({
             accessibilityRole="button"
             onPress={onLoginWithBiometry}
             style={styles.biometryButton}>
-            <Text style={styles.biometryText}>Use {biometryLabel}</Text>
+            <Text style={styles.biometryText}>
+              {t('auth.useBiometry', {label: biometryLabel})}
+            </Text>
           </Pressable>
         ) : null}
 
@@ -109,7 +114,9 @@ function LoginCard({
           accessibilityRole="button"
           onPress={onCreateAccount}
           style={styles.createAccountButton}>
-          <Text style={styles.createAccountText}>Create Account</Text>
+          <Text style={styles.createAccountText}>
+            {t('auth.createAccount')}
+          </Text>
         </Pressable>
       </View>
     </View>

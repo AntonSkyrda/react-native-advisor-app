@@ -12,6 +12,7 @@ import {
 } from 'redux-persist';
 
 import authReducer from '../features/auth/store/authSlice';
+import settingsReducer from '../features/settings/store/settingsSlice';
 
 const persistedAuthReducer = persistReducer(
   {
@@ -22,8 +23,17 @@ const persistedAuthReducer = persistReducer(
   authReducer,
 );
 
+const persistedSettingsReducer = persistReducer(
+  {
+    key: 'settings',
+    storage: AsyncStorage,
+  },
+  settingsReducer,
+);
+
 const rootReducer = combineReducers({
   auth: persistedAuthReducer,
+  settings: persistedSettingsReducer,
 });
 
 export const store = configureStore({

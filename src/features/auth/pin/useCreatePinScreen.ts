@@ -94,7 +94,7 @@ function useCreatePinScreen() {
       dispatch(authUnlocked());
       navigation.reset({
         index: 0,
-        routes: [{name: 'Success'}],
+        routes: [{name: 'Home'}],
       });
     } catch {
       setError('Unable to save PIN on this device');

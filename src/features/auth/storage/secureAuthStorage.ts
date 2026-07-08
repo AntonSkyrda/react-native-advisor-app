@@ -9,6 +9,8 @@ const biometricPinService = 'personal-advisor.biometric-pin';
 type StoredAuthSession = {
   accessToken: string;
   email?: string;
+  firstName?: string;
+  lastName?: string;
   refreshToken: string;
   userId: number;
   username: string;
@@ -23,6 +25,8 @@ export async function saveAuthSession(user: AuthUser): Promise<void> {
   const session: StoredAuthSession = {
     accessToken: user.accessToken,
     email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
     refreshToken: user.refreshToken,
     userId: user.id,
     username: user.username,

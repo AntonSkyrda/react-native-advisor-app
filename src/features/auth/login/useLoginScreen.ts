@@ -107,7 +107,7 @@ function useLoginScreen() {
         dispatch(authUnlocked());
         navigation.reset({
           index: 0,
-          routes: [{name: 'Success'}],
+          routes: [{name: 'Home'}],
         });
       }
     } catch {

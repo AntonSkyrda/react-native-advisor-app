@@ -5,7 +5,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../features/auth/screens/LoginScreen';
 import PinCodeScreen from '../features/auth/screens/PinCodeScreen';
 import SignUpScreen from '../features/auth/screens/SignUpScreen';
-import SuccessScreen from '../features/auth/screens/SuccessScreen';
+import HomeScreen from '../features/home/screens/HomeScreen';
+import PostDetailsScreen from '../features/posts/screens/PostDetailsScreen';
 import WelcomeScreen from '../features/welcome/screens/WelcomeScreen';
 import SplashScreen from '../screens/SplashScreen';
 import type {RootStackParamList} from './types';
@@ -28,7 +29,8 @@ function AppNavigator(): React.JSX.Element {
         <RootStack.Screen name="UnlockPin">
           {() => <PinCodeScreen mode="unlock" />}
         </RootStack.Screen>
-        <RootStack.Screen name="Success" component={SuccessScreen} />
+        <RootStack.Screen name="Home" component={HomeScreen} />
+        <RootStack.Screen name="PostDetails" component={PostDetailsScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

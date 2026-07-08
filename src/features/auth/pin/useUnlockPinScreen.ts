@@ -59,7 +59,7 @@ function useUnlockPinScreen() {
     dispatch(authUnlocked());
     navigation.reset({
       index: 0,
-      routes: [{name: 'Success'}],
+      routes: [{name: 'Home'}],
     });
   }, [dispatch, navigation]);
 

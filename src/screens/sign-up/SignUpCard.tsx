@@ -2,8 +2,10 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import type {Control, FieldErrors} from 'react-hook-form';
 
+import HidePasswordIcon from '../../assets/icons/hide-password.svg';
+import ShowPasswordIcon from '../../assets/icons/show-password.svg';
+import SignUpIcon from '../../assets/icons/sign-up-icon.svg';
 import SignUpField from './SignUpField';
-import {AccountIcon, EyeIcon} from './SignUpIcons';
 import {
   emailRules,
   nameRules,
@@ -27,9 +29,7 @@ function SignUpCard({
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
-        <View style={styles.accountIcon}>
-          <AccountIcon />
-        </View>
+        <SignUpIcon width={49} height={53} style={styles.accountIcon} />
         <View>
           <Text style={styles.title}>Sign up</Text>
           <Text style={styles.subtitle}>Personal Account</Text>
@@ -67,7 +67,11 @@ function SignUpCard({
               accessibilityRole="button"
               hitSlop={10}
               onPress={onTogglePassword}>
-              <EyeIcon />
+              {passwordVisible ? (
+                <HidePasswordIcon width={20} height={14} />
+              ) : (
+                <ShowPasswordIcon width={24} height={24} />
+              )}
             </Pressable>
           }
           rules={passwordRules}
@@ -97,13 +101,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E5E9F0',
   },
   accountIcon: {
-    width: 42,
-    height: 42,
-    alignItems: 'center',
-    justifyContent: 'center',
     marginRight: 12,
-    borderRadius: 21,
-    backgroundColor: '#EAF8F5',
   },
   title: {
     color: '#111827',

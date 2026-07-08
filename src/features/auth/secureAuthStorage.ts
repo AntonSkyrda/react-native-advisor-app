@@ -1,0 +1,111 @@
+import * as Keychain from 'react-native-keychain';
+
+import type {AuthUser} from './types/authTypes';
+
+const authSessionService = 'personal-advisor.auth-session';
+const pinService = 'personal-advisor.pin';
+
+type StoredAuthSession = {
+  accessToken: string;
+  refreshToken: string;
+  userId: number;
+  username: string;
+};
+
+type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export async function saveAuthSession(user: AuthUser): Promise<void> {
+  const session: StoredAuthSession = {
+    accessToken: user.accessToken,
+    refreshToken: user.refreshToken,
+    userId: user.id,
+    username: user.username,
+  };
+
+  await Keychain.setGenericPassword(user.username, JSON.stringify(session), {
+    accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+    service: authSessionService,
+  });
+}
+
+export async function getAuthSession(): Promise<StoredAuthSession | null> {
+  const credentials = await Keychain.getGenericPassword({
+    service: authSessionService,
+  });
+
+  if (!credentials) {
+    return null;
+  }
+
+  return JSON.parse(credentials.password);
+}
+
+export async function saveAuthTokens(tokens: AuthTokens): Promise<void> {
+  const session = await getAuthSession();
+
+  if (!session) {
+    return;
+  }
+
+  await Keychain.setGenericPassword(
+    session.username,
+    JSON.stringify({
+      ...session,
+      ...tokens,
+    }),
+    {
+      accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+      service: authSessionService,
+    },
+  );
+}
+
+export async function savePinCode(pin: string): Promise<void> {
+  await Keychain.setGenericPassword('pin', pin, {
+    accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
+    accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+    authenticationPrompt: {
+      title: 'Enable biometric login',
+      subtitle: 'Use your device unlock to protect app access',
+      cancel: 'Cancel',
+    },
+    service: pinService,
+  });
+}
+
+export async function getPinWithBiometry(): Promise<string | null> {
+  const credentials = await Keychain.getGenericPassword({
+    accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
+    authenticationPrompt: {
+      title: 'Sign in',
+      subtitle: 'Use Face ID or biometrics',
+      cancel: 'Cancel',
+    },
+    service: pinService,
+  });
+
+  return credentials ? credentials.password : null;
+}
+
+export async function hasSavedPin(): Promise<boolean> {
+  return Keychain.hasGenericPassword({
+    service: pinService,
+  });
+}
+
+export async function getSupportedBiometryLabel(): Promise<string | null> {
+  const biometryType = await Keychain.getSupportedBiometryType();
+
+  if (!biometryType) {
+    return null;
+  }
+
+  if (biometryType === Keychain.BIOMETRY_TYPE.FACE_ID) {
+    return 'Face ID';
+  }
+
+  return 'Biometrics';
+}

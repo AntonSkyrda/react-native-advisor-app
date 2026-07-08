@@ -47,7 +47,10 @@ function WelcomeScreen(): React.JSX.Element {
         ))}
 
         <View style={styles.actions}>
-          <Pressable style={styles.signInButton}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => navigation.navigate('Login')}
+            style={styles.signInButton}>
             <Text style={styles.signInText}>Sign In</Text>
           </Pressable>
           <PrimaryButton

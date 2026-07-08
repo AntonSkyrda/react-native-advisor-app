@@ -8,21 +8,25 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import SignUpCard from './sign-up/SignUpCard';
-import SignUpContinueButton from './sign-up/SignUpContinueButton';
 import {BackIcon} from './sign-up/SignUpIcons';
-import useSignUpScreen from './sign-up/useSignUpScreen';
+import LoginCard from './login/LoginCard';
+import useLoginScreen from './login/useLoginScreen';
 
-function SignUpScreen(): React.JSX.Element {
+function LoginScreen(): React.JSX.Element {
   const {
+    biometryLabel,
     control,
+    createAccount,
     errors,
     goBack,
-    isValid,
+    isBiometryAvailable,
+    isLoading,
+    loginWithBiometry,
     passwordVisible,
-    submitForm,
+    submitError,
+    submitLogin,
     togglePasswordVisibility,
-  } = useSignUpScreen();
+  } = useLoginScreen();
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -41,18 +45,20 @@ function SignUpScreen(): React.JSX.Element {
             <BackIcon />
           </Pressable>
 
-          <SignUpCard
+          <LoginCard
+            biometryLabel={biometryLabel}
             control={control}
             errors={errors}
+            isBiometryAvailable={isBiometryAvailable}
+            isLoading={isLoading}
+            onCreateAccount={createAccount}
+            onLoginWithBiometry={loginWithBiometry}
+            onSubmit={submitLogin}
             onTogglePassword={togglePasswordVisibility}
             passwordVisible={passwordVisible}
+            submitError={submitError}
           />
         </ScrollView>
-
-        <SignUpContinueButton
-          disabled={!isValid}
-          onPress={submitForm}
-        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -77,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default LoginScreen;

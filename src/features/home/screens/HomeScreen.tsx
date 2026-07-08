@@ -1,28 +1,36 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React, {useCallback} from 'react';
+import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import type {RootStackParamList} from '../../../navigation/types';
 import BeforeYouStart from '../components/BeforeYouStart';
-import HomeBottomBar from '../components/HomeBottomBar';
 import HomeHeader from '../components/HomeHeader';
 import HomePostsList from '../components/HomePostsList';
 import PersonalAdvisorCard from '../components/PersonalAdvisorCard';
 import useHomeScreen from '../hooks/useHomeScreen';
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Home'
->;
-
 function HomeScreen(): React.JSX.Element {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation();
   const {posts, postsError, postsLoading, userName} = useHomeScreen();
 
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      StatusBar.setBackgroundColor('#FF873D');
+
+      return () => {
+        StatusBar.setBarStyle('dark-content');
+        StatusBar.setBackgroundColor('#FFFFFF');
+      };
+    }, []),
+  );
+
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView edges={['left', 'right']} style={styles.screen}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
@@ -33,23 +41,18 @@ function HomeScreen(): React.JSX.Element {
           <HomePostsList
             error={postsError}
             loading={postsLoading}
-            onPostPress={postId => navigation.navigate('PostDetails', {postId})}
+            onPostPress={postId =>
+              navigation.dispatch(
+                CommonActions.navigate({
+                  name: 'PostDetails',
+                  params: {postId},
+                }),
+              )
+            }
             posts={posts}
           />
         </View>
       </ScrollView>
-      <HomeBottomBar
-        activeItem="Home"
-        onItemPress={item => {
-          if (item === 'Search') {
-            navigation.navigate('Search');
-          }
-
-          if (item === 'Profile') {
-            navigation.navigate('Settings');
-          }
-        }}
-      />
     </SafeAreaView>
   );
 }
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F3F5',
   },
   scrollContent: {
-    paddingBottom: 76,
+    paddingBottom: 18,
   },
   content: {
     paddingHorizontal: 17,

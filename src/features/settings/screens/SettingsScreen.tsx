@@ -10,8 +10,9 @@ import {
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import ExitIcon from '../../../assets/icons/exit-icon.svg';
+import LangIcon from '../../../assets/icons/lang-icon.svg';
 import ProfileIcon from '../../../assets/icons/profile-bar-icon.svg';
-import HomeBottomBar from '../../home/components/HomeBottomBar';
 import {BackIcon} from '../../auth/sign-up/SignUpIcons';
 import useSettingsScreen from '../hooks/useSettingsScreen';
 
@@ -19,7 +20,6 @@ function SettingsScreen(): React.JSX.Element {
   const {t} = useTranslation();
   const {
     goBack,
-    handleBottomBarPress,
     logout,
     openLanguageSettings,
     user,
@@ -59,7 +59,7 @@ function SettingsScreen(): React.JSX.Element {
           onPress={openLanguageSettings}
           style={styles.row}>
           <View style={styles.rowIcon}>
-            <Text style={styles.rowIconText}>A</Text>
+            <LangIcon width={12} height={12} />
           </View>
           <Text style={styles.rowText}>{t('settings.language')}</Text>
           <Text style={styles.chevron}>{'>'}</Text>
@@ -71,16 +71,12 @@ function SettingsScreen(): React.JSX.Element {
           onPress={logout}
           style={styles.row}>
           <View style={styles.rowIcon}>
-            <Text style={styles.rowIconText}>↪</Text>
+            <ExitIcon width={12} height={12} />
           </View>
           <Text style={styles.rowText}>{t('settings.logout')}</Text>
           <Text style={styles.chevron}>{'>'}</Text>
         </Pressable>
       </ScrollView>
-      <HomeBottomBar
-        activeItem="Profile"
-        onItemPress={handleBottomBarPress}
-      />
     </SafeAreaView>
   );
 }
@@ -93,7 +89,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 17,
     paddingTop: 10,
-    paddingBottom: 92,
+    paddingBottom: 18,
   },
   backButton: {
     width: 42,
@@ -165,12 +161,6 @@ const styles = StyleSheet.create({
     borderColor: '#FFE2CC',
     borderRadius: 10,
     backgroundColor: '#FFF6EF',
-  },
-  rowIconText: {
-    color: '#FA8A34',
-    fontSize: 10,
-    fontWeight: '700',
-    lineHeight: 13,
   },
   rowText: {
     flex: 1,

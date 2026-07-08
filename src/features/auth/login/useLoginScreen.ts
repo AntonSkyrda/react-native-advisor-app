@@ -8,13 +8,12 @@ import {useTranslation} from 'react-i18next';
 
 import {loginUser} from '../api/authApi';
 import {
-  getPinWithBiometry,
+  authenticateWithBiometry,
   getSupportedBiometryLabel,
-  hasBiometricPin,
+  hasBiometricAuth,
   saveAuthSession,
 } from '../storage/secureAuthStorage';
 import {authSessionDetected, authUnlocked} from '../store/authSlice';
-import type {RootStackParamList} from '../../../navigation/types';
 import {useAppDispatch} from '../../../store/hooks';
 import {
   getLoginPasswordRules,
@@ -23,8 +22,16 @@ import {
   type LoginFormValues,
 } from './loginForm';
 
+type LoginStackParamList = {
+  CreatePin: undefined;
+  Login: undefined;
+  MainTabs: undefined;
+  SignUp: undefined;
+  Welcome: undefined;
+};
+
 type LoginScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
+  LoginStackParamList,
   'Login'
 >;
 
@@ -60,7 +67,7 @@ function useLoginScreen() {
     async function loadBiometryState() {
       const [label, savedPin] = await Promise.all([
         getSupportedBiometryLabel(),
-        hasBiometricPin(),
+        hasBiometricAuth(),
       ]);
 
       if (isMounted) {
@@ -110,13 +117,13 @@ function useLoginScreen() {
 
   const loginWithBiometry = useCallback(async () => {
     try {
-      const pin = await getPinWithBiometry();
+      const authenticated = await authenticateWithBiometry();
 
-      if (pin) {
+      if (authenticated) {
         dispatch(authUnlocked());
         navigation.reset({
           index: 0,
-          routes: [{name: 'Home'}],
+          routes: [{name: 'MainTabs'}],
         });
       }
     } catch {

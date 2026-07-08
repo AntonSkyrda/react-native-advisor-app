@@ -3,7 +3,7 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import HomeBottomBar from '../../home/components/HomeBottomBar';
+import LangIcon from '../../../assets/icons/lang-icon.svg';
 import {BackIcon} from '../../auth/sign-up/SignUpIcons';
 import type {AppLanguage} from '../store/settingsSlice';
 import useSettingsLanguageScreen from '../hooks/useSettingsLanguageScreen';
@@ -18,8 +18,7 @@ const languageOptions: Array<{
 
 function SettingsLanguageScreen(): React.JSX.Element {
   const {t} = useTranslation();
-  const {goBack, handleBottomBarPress, language, selectLanguage} =
-    useSettingsLanguageScreen();
+  const {goBack, language, selectLanguage} = useSettingsLanguageScreen();
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -46,7 +45,7 @@ function SettingsLanguageScreen(): React.JSX.Element {
               onPress={() => selectLanguage(option.value)}
               style={styles.row}>
               <View style={styles.rowIcon}>
-                <Text style={styles.rowIconText}>A</Text>
+                <LangIcon width={12} height={12} />
               </View>
               <Text style={styles.rowText}>{t(option.labelKey)}</Text>
               <View style={[styles.radio, active ? styles.radioActive : null]}>
@@ -56,10 +55,6 @@ function SettingsLanguageScreen(): React.JSX.Element {
           );
         })}
       </ScrollView>
-      <HomeBottomBar
-        activeItem="Profile"
-        onItemPress={handleBottomBarPress}
-      />
     </SafeAreaView>
   );
 }
@@ -72,7 +67,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 17,
     paddingTop: 10,
-    paddingBottom: 92,
+    paddingBottom: 18,
   },
   backButton: {
     width: 42,
@@ -107,12 +102,6 @@ const styles = StyleSheet.create({
     borderColor: '#FFE2CC',
     borderRadius: 10,
     backgroundColor: '#FFF6EF',
-  },
-  rowIconText: {
-    color: '#FA8A34',
-    fontSize: 10,
-    fontWeight: '700',
-    lineHeight: 13,
   },
   rowText: {
     flex: 1,

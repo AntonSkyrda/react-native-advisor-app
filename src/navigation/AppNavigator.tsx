@@ -5,14 +5,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../features/auth/screens/LoginScreen';
 import PinCodeScreen from '../features/auth/screens/PinCodeScreen';
 import SignUpScreen from '../features/auth/screens/SignUpScreen';
-import HomeScreen from '../features/home/screens/HomeScreen';
 import PostDetailsScreen from '../features/posts/screens/PostDetailsScreen';
-import SearchScreen from '../features/search/screens/SearchScreen';
-import SettingsLanguageScreen from '../features/settings/screens/SettingsLanguageScreen';
-import SettingsScreen from '../features/settings/screens/SettingsScreen';
 import WelcomeScreen from '../features/welcome/screens/WelcomeScreen';
 import SplashScreen from '../screens/SplashScreen';
-import type {RootStackParamList} from './types';
+import MainTabsNavigator from './MainTabsNavigator';
+import type {RootStackParamList} from './navigationTypes';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,13 +29,7 @@ function AppNavigator(): React.JSX.Element {
         <RootStack.Screen name="UnlockPin">
           {() => <PinCodeScreen mode="unlock" />}
         </RootStack.Screen>
-        <RootStack.Screen name="Home" component={HomeScreen} />
-        <RootStack.Screen name="Search" component={SearchScreen} />
-        <RootStack.Screen name="Settings" component={SettingsScreen} />
-        <RootStack.Screen
-          name="SettingsLanguage"
-          component={SettingsLanguageScreen}
-        />
+        <RootStack.Screen name="MainTabs" component={MainTabsNavigator} />
         <RootStack.Screen name="PostDetails" component={PostDetailsScreen} />
       </RootStack.Navigator>
     </NavigationContainer>

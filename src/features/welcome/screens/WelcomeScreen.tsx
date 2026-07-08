@@ -7,7 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import BitcoinIcon from '../../../assets/icons/bitcoin-icon.svg';
 import PrimaryButton from '../../../components/PrimaryButton';
-import type {RootStackParamList} from '../../../navigation/types';
+import type {RootStackParamList} from '../../../navigation/navigationTypes';
 import WelcomeFeatureCard, {
   welcomeCardShadow,
 } from '../components/WelcomeFeatureCard';

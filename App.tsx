@@ -7,8 +7,8 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 
 import {
-  asyncStoragePersister,
   queryClient,
+  queryPersistOptions,
 } from './src/lib/queryClient';
 import AppNavigator from './src/navigation/AppNavigator';
 import {persistor, store} from './src/store/store';
@@ -22,7 +22,7 @@ function App(): React.JSX.Element {
         <PersistGate persistor={persistor}>
           <PersistQueryClientProvider
             client={queryClient}
-            persistOptions={{persister: asyncStoragePersister}}>
+            persistOptions={queryPersistOptions}>
             <SafeAreaProvider>
               <LanguageSync />
               <View style={styles.container}>

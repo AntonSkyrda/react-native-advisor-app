@@ -10,7 +10,7 @@ import {
   getAuthSession,
   hasSavedPin,
 } from '../features/auth/storage/secureAuthStorage';
-import type {RootStackParamList} from '../navigation/types';
+import type {RootStackParamList} from '../navigation/navigationTypes';
 import {useAppDispatch} from '../store/hooks';
 
 type SplashScreenNavigationProp = NativeStackNavigationProp<

@@ -1,19 +1,57 @@
 import {useCallback, useState} from 'react';
+import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useTranslation} from 'react-i18next';
 
-import type {RootStackParamList} from '../../../navigation/types';
 import {useAppDispatch} from '../../../store/hooks';
-import {savePinCode} from '../storage/secureAuthStorage';
+import {
+  enableBiometricAuth,
+  savePinCode,
+} from '../storage/secureAuthStorage';
 import {authUnlocked} from '../store/authSlice';
 
+type CreatePinStackParamList = {
+  CreatePin: undefined;
+  MainTabs: undefined;
+  Welcome: undefined;
+};
+
 type CreatePinScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
+  CreatePinStackParamList,
   'CreatePin'
 >;
 
 const pinLength = 5;
+
+function requestBiometricEnrollment({
+  onComplete,
+  onEnable,
+  t,
+}: {
+  onComplete: () => void;
+  onEnable: () => Promise<void>;
+  t: (key: string) => string;
+}) {
+  Alert.alert(
+    t('auth.enableBiometricLoginTitle'),
+    t('auth.enableBiometricLoginSubtitle'),
+    [
+      {
+        onPress: onComplete,
+        style: 'cancel',
+        text: t('auth.notNow'),
+      },
+      {
+        onPress: () => {
+          onEnable().finally(onComplete);
+        },
+        text: t('auth.enable'),
+      },
+    ],
+    {cancelable: false},
+  );
+}
 
 function useCreatePinScreen() {
   const dispatch = useAppDispatch();
@@ -93,10 +131,17 @@ function useCreatePinScreen() {
 
     try {
       await savePinCode(pin);
-      dispatch(authUnlocked());
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Home'}],
+
+      requestBiometricEnrollment({
+        onComplete: () => {
+          dispatch(authUnlocked());
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'MainTabs'}],
+          });
+        },
+        onEnable: enableBiometricAuth,
+        t,
       });
     } catch {
       setError(t('auth.pinSaveFailed'));

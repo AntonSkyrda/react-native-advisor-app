@@ -16,7 +16,7 @@ function usePostDetailsScreen() {
   const {data: post, error, isPending} = usePost(postId);
   const {data: comments = []} = usePostComments(postId);
 
-  const errorMessage = error instanceof Error ? error.message : undefined;
+  const errorMessage = !post && error instanceof Error ? error.message : undefined;
 
   const handleBackPress = () => {
     navigation.goBack();

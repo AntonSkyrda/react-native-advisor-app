@@ -1,20 +1,13 @@
 import {useCallback} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import type {NavigationProp} from '@react-navigation/native';
 import i18n from 'i18next';
+import {useSelector} from 'react-redux';
 
 import type {AppLanguage} from '../store/settingsSlice';
 import {languageChanged} from '../store/settingsSlice';
-import type {BottomBarItem} from '../../home/components/HomeBottomBar';
+import type {SettingsStackParamList} from '../../../navigation/navigationTypes';
 import {useAppDispatch} from '../../../store/hooks';
-import {useSelector} from 'react-redux';
-
-type SettingsLanguageStackParamList = {
-  Home: undefined;
-  Search: undefined;
-  Settings: undefined;
-  SettingsLanguage: undefined;
-};
 
 type SettingsLanguageRootState = {
   settings: {
@@ -22,10 +15,7 @@ type SettingsLanguageRootState = {
   };
 };
 
-type SettingsLanguageNavigationProp = NativeStackNavigationProp<
-  SettingsLanguageStackParamList,
-  'SettingsLanguage'
->;
+type SettingsLanguageNavigationProp = NavigationProp<SettingsStackParamList>;
 
 function useSettingsLanguageScreen() {
   const dispatch = useAppDispatch();
@@ -40,7 +30,7 @@ function useSettingsLanguageScreen() {
       return;
     }
 
-    navigation.replace('Settings');
+    navigation.navigate('SettingsHome');
   }, [navigation]);
 
   const selectLanguage = useCallback(
@@ -51,26 +41,8 @@ function useSettingsLanguageScreen() {
     [dispatch],
   );
 
-  const handleBottomBarPress = useCallback(
-    (item: BottomBarItem) => {
-      if (item === 'Home') {
-        navigation.navigate('Home');
-      }
-
-      if (item === 'Search') {
-        navigation.navigate('Search');
-      }
-
-      if (item === 'Profile') {
-        navigation.navigate('Settings');
-      }
-    },
-    [navigation],
-  );
-
   return {
     goBack,
-    handleBottomBarPress,
     language,
     selectLanguage,
   };

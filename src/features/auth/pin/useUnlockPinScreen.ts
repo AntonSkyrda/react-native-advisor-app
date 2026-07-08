@@ -5,19 +5,24 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useTranslation} from 'react-i18next';
 
 import {
+  authenticateWithBiometry,
   clearAuthStorage,
   getAuthSession,
-  getPinWithBiometry,
   getSavedPinCode,
   getSupportedBiometryLabel,
-  hasBiometricPin,
+  hasBiometricAuth,
 } from '../storage/secureAuthStorage';
 import {authUnlocked, authUserChanged} from '../store/authSlice';
-import type {RootStackParamList} from '../../../navigation/types';
 import {useAppDispatch} from '../../../store/hooks';
 
+type UnlockPinStackParamList = {
+  Login: undefined;
+  MainTabs: undefined;
+  UnlockPin: undefined;
+};
+
 type UnlockPinScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
+  UnlockPinStackParamList,
   'UnlockPin'
 >;
 
@@ -37,7 +42,7 @@ function useUnlockPinScreen() {
   useEffect(() => {
     let isMounted = true;
 
-    Promise.all([getSupportedBiometryLabel(), hasBiometricPin(), getAuthSession()])
+    Promise.all([getSupportedBiometryLabel(), hasBiometricAuth(), getAuthSession()])
       .then(([label, savedBiometry, session]) => {
         if (isMounted) {
           setBiometryLabel(label);
@@ -61,7 +66,7 @@ function useUnlockPinScreen() {
     dispatch(authUnlocked());
     navigation.reset({
       index: 0,
-      routes: [{name: 'Home'}],
+      routes: [{name: 'MainTabs'}],
     });
   }, [dispatch, navigation]);
 
@@ -113,9 +118,9 @@ function useUnlockPinScreen() {
 
   const loginWithBiometry = useCallback(async () => {
     try {
-      const pin = await getPinWithBiometry();
+      const authenticated = await authenticateWithBiometry();
 
-      if (pin) {
+      if (authenticated) {
         unlockApp();
       }
     } catch {

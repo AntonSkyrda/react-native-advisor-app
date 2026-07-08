@@ -1,26 +1,15 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import type {NavigationProp} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 
 import {clearAuthStorage, getAuthSession} from '../../auth/storage/secureAuthStorage';
 import {authUserChanged} from '../../auth/store/authSlice';
-import type {BottomBarItem} from '../../home/components/HomeBottomBar';
 import {queryClient} from '../../../lib/queryClient';
+import type {SettingsStackParamList} from '../../../navigation/navigationTypes';
 import {useAppDispatch} from '../../../store/hooks';
 
-type SettingsStackParamList = {
-  Home: undefined;
-  Login: undefined;
-  Search: undefined;
-  Settings: undefined;
-  SettingsLanguage: undefined;
-};
-
-type SettingsScreenNavigationProp = NativeStackNavigationProp<
-  SettingsStackParamList,
-  'Settings'
->;
+type SettingsScreenNavigationProp = NavigationProp<SettingsStackParamList>;
 
 type SettingsUser = {
   image?: string;
@@ -70,7 +59,7 @@ function useSettingsScreen() {
       return;
     }
 
-    navigation.replace('Home');
+    navigation.getParent()?.navigate('Home');
   }, [navigation]);
 
   const openLanguageSettings = useCallback(() => {
@@ -81,28 +70,14 @@ function useSettingsScreen() {
     await clearAuthStorage();
     queryClient.clear();
     dispatch(authUserChanged());
-    navigation.reset({
+    navigation.getParent()?.getParent()?.reset({
       index: 0,
       routes: [{name: 'Login'}],
     });
   }, [dispatch, navigation]);
 
-  const handleBottomBarPress = useCallback(
-    (item: BottomBarItem) => {
-      if (item === 'Home') {
-        navigation.navigate('Home');
-      }
-
-      if (item === 'Search') {
-        navigation.navigate('Search');
-      }
-    },
-    [navigation],
-  );
-
   return {
     goBack,
-    handleBottomBarPress,
     logout,
     openLanguageSettings,
     user,

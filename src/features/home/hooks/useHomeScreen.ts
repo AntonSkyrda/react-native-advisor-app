@@ -35,7 +35,10 @@ function useHomeScreen() {
 
   return {
     posts: postsQuery.data ?? [],
-    postsError: postsQuery.error instanceof Error ? postsQuery.error.message : undefined,
+    postsError:
+      !postsQuery.data && postsQuery.error instanceof Error
+        ? postsQuery.error.message
+        : undefined,
     postsLoading: postsQuery.isPending,
     userName,
   };

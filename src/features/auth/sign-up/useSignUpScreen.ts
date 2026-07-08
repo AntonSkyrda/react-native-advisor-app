@@ -4,7 +4,7 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
-import type {RootStackParamList} from '../../../navigation/types';
+import type {RootStackParamList} from '../../../navigation/navigationTypes';
 import {
   getEmailRules,
   getNameRules,

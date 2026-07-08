@@ -5,7 +5,8 @@ import type {AuthUser} from '../types/authTypes';
 
 const authSessionService = 'personal-advisor.auth-session';
 const pinService = 'personal-advisor.pin';
-const biometricPinService = 'personal-advisor.biometric-pin';
+const biometricAuthService = 'personal-advisor.biometric-auth';
+const biometricAuthMarker = 'biometry-enabled';
 
 type StoredAuthSession = {
   accessToken: string;
@@ -57,7 +58,7 @@ export async function clearAuthStorage(): Promise<void> {
   await Promise.all([
     Keychain.resetGenericPassword({service: authSessionService}),
     Keychain.resetGenericPassword({service: pinService}),
-    Keychain.resetGenericPassword({service: biometricPinService}),
+    Keychain.resetGenericPassword({service: biometricAuthService}),
   ]);
 }
 
@@ -86,8 +87,10 @@ export async function savePinCode(pin: string): Promise<void> {
     accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
     service: pinService,
   });
+}
 
-  await Keychain.setGenericPassword('pin', pin, {
+export async function enableBiometricAuth(): Promise<void> {
+  await Keychain.setGenericPassword('biometry', biometricAuthMarker, {
     accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
     accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
     authenticationPrompt: {
@@ -95,7 +98,7 @@ export async function savePinCode(pin: string): Promise<void> {
       subtitle: i18n.t('auth.enableBiometricLoginSubtitle'),
       cancel: i18n.t('auth.cancel'),
     },
-    service: biometricPinService,
+    service: biometricAuthService,
   });
 }
 
@@ -107,7 +110,7 @@ export async function getSavedPinCode(): Promise<string | null> {
   return credentials ? credentials.password : null;
 }
 
-export async function getPinWithBiometry(): Promise<string | null> {
+export async function authenticateWithBiometry(): Promise<boolean> {
   const credentials = await Keychain.getGenericPassword({
     accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
     authenticationPrompt: {
@@ -115,10 +118,10 @@ export async function getPinWithBiometry(): Promise<string | null> {
       subtitle: i18n.t('auth.signInBiometricSubtitle'),
       cancel: i18n.t('auth.cancel'),
     },
-    service: biometricPinService,
+    service: biometricAuthService,
   });
 
-  return credentials ? credentials.password : null;
+  return credentials ? credentials.password === biometricAuthMarker : false;
 }
 
 export async function hasSavedPin(): Promise<boolean> {
@@ -127,9 +130,9 @@ export async function hasSavedPin(): Promise<boolean> {
   });
 }
 
-export async function hasBiometricPin(): Promise<boolean> {
+export async function hasBiometricAuth(): Promise<boolean> {
   return Keychain.hasGenericPassword({
-    service: biometricPinService,
+    service: biometricAuthService,
   });
 }
 

@@ -12,14 +12,12 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 
 import SearchIcon from '../../../assets/icons/search-icon.svg';
-import HomeBottomBar from '../../home/components/HomeBottomBar';
 import useSearchScreen from '../hooks/useSearchScreen';
 
 function SearchScreen(): React.JSX.Element {
   const {t} = useTranslation();
   const {
     errorMessage,
-    handleBottomBarPress,
     handlePostPress,
     isLoading,
     posts,
@@ -72,10 +70,6 @@ function SearchScreen(): React.JSX.Element {
           ))}
         </View>
       </ScrollView>
-      <HomeBottomBar
-        activeItem="Search"
-        onItemPress={handleBottomBarPress}
-      />
     </SafeAreaView>
   );
 }
@@ -88,7 +82,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 18,
-    paddingBottom: 92,
+    paddingBottom: 18,
   },
   title: {
     color: '#171B22',

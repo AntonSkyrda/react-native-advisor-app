@@ -4,13 +4,13 @@ import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import BitcoinIcon from '../assets/icons/bitcoin-icon.svg';
-import PrimaryButton from '../components/PrimaryButton';
-import type {RootStackParamList} from '../navigation/types';
+import BitcoinIcon from '../../../assets/icons/bitcoin-icon.svg';
+import PrimaryButton from '../../../components/PrimaryButton';
+import type {RootStackParamList} from '../../../navigation/types';
 import WelcomeFeatureCard, {
   welcomeCardShadow,
-} from './welcome/WelcomeFeatureCard';
-import {welcomeCards, type WelcomeCardName} from './welcome/welcomeCards';
+} from '../components/WelcomeFeatureCard';
+import {welcomeCards, type WelcomeCardName} from '../welcomeCards';
 
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

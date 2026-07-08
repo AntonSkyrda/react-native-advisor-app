@@ -2,10 +2,10 @@ import React from 'react';
 import {ActivityIndicator, Pressable, StyleSheet, Text, View} from 'react-native';
 import type {Control, FieldErrors} from 'react-hook-form';
 
-import PrimaryButton from '../../components/PrimaryButton';
-import HidePasswordIcon from '../../assets/icons/hide-password.svg';
-import ShowPasswordIcon from '../../assets/icons/show-password.svg';
-import SignInIcon from '../../assets/icons/sign-in-icon.svg';
+import HidePasswordIcon from '../../../assets/icons/hide-password.svg';
+import ShowPasswordIcon from '../../../assets/icons/show-password.svg';
+import SignInIcon from '../../../assets/icons/sign-in-icon.svg';
+import PrimaryButton from '../../../components/PrimaryButton';
 import LoginField from './LoginField';
 import {
   loginPasswordRules,

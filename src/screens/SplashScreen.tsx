@@ -5,7 +5,13 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import BitcoinIcon from '../assets/icons/bitcoin-icon.svg';
+import {authLocked, authSessionDetected} from '../features/auth/store/authSlice';
+import {
+  getAuthSession,
+  hasSavedPin,
+} from '../features/auth/storage/secureAuthStorage';
 import type {RootStackParamList} from '../navigation/types';
+import {useAppDispatch} from '../store/hooks';
 
 type SplashScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -15,15 +21,31 @@ type SplashScreenNavigationProp = NativeStackNavigationProp<
 const splashDelay = 1600;
 
 function SplashScreen(): React.JSX.Element {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation<SplashScreenNavigationProp>();
 
   React.useEffect(() => {
     const timerId = setTimeout(() => {
-      navigation.replace('Welcome');
+      async function resolveInitialRoute() {
+        const [session, savedPin] = await Promise.all([
+          getAuthSession(),
+          hasSavedPin(),
+        ]);
+        const hasExistingLogin = Boolean(session && savedPin);
+
+        dispatch(authLocked());
+        dispatch(authSessionDetected(hasExistingLogin));
+        navigation.replace(hasExistingLogin ? 'UnlockPin' : 'Welcome');
+      }
+
+      resolveInitialRoute().catch(() => {
+        dispatch(authSessionDetected(false));
+        navigation.replace('Welcome');
+      });
     }, splashDelay);
 
     return () => clearTimeout(timerId);
-  }, [navigation]);
+  }, [dispatch, navigation]);
 
   return (
     <SafeAreaView style={styles.screen}>

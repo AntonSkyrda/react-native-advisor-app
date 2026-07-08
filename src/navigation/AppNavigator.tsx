@@ -2,12 +2,12 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import CreatePinScreen from '../screens/CreatePinScreen';
-import LoginScreen from '../screens/LoginScreen';
+import LoginScreen from '../features/auth/screens/LoginScreen';
+import PinCodeScreen from '../features/auth/screens/PinCodeScreen';
+import SignUpScreen from '../features/auth/screens/SignUpScreen';
+import SuccessScreen from '../features/auth/screens/SuccessScreen';
+import WelcomeScreen from '../features/welcome/screens/WelcomeScreen';
 import SplashScreen from '../screens/SplashScreen';
-import SignUpScreen from '../screens/SignUpScreen';
-import SuccessScreen from '../screens/SuccessScreen';
-import WelcomeScreen from '../screens/WelcomeScreen';
 import type {RootStackParamList} from './types';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -22,7 +22,12 @@ function AppNavigator(): React.JSX.Element {
         <RootStack.Screen name="Welcome" component={WelcomeScreen} />
         <RootStack.Screen name="Login" component={LoginScreen} />
         <RootStack.Screen name="SignUp" component={SignUpScreen} />
-        <RootStack.Screen name="CreatePin" component={CreatePinScreen} />
+        <RootStack.Screen name="CreatePin">
+          {() => <PinCodeScreen mode="create" />}
+        </RootStack.Screen>
+        <RootStack.Screen name="UnlockPin">
+          {() => <PinCodeScreen mode="unlock" />}
+        </RootStack.Screen>
         <RootStack.Screen name="Success" component={SuccessScreen} />
       </RootStack.Navigator>
     </NavigationContainer>

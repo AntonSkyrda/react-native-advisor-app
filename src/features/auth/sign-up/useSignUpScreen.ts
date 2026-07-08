@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useForm} from 'react-hook-form';
 
-import type {RootStackParamList} from '../../navigation/types';
+import type {RootStackParamList} from '../../../navigation/types';
 import {signUpDefaultValues, type SignUpFormValues} from './signUpForm';
 
 type SignUpScreenNavigationProp = NativeStackNavigationProp<
@@ -24,7 +24,12 @@ function useSignUpScreen() {
   });
 
   const goBack = useCallback(() => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.replace('Welcome');
   }, [navigation]);
 
   const togglePasswordVisibility = useCallback(() => {
@@ -32,7 +37,12 @@ function useSignUpScreen() {
   }, []);
 
   const submitForm = useCallback(() => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.replace('Welcome');
   }, [navigation]);
 
   return {

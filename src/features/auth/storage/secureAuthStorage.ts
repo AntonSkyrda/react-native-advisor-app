@@ -1,12 +1,14 @@
 import * as Keychain from 'react-native-keychain';
 
-import type {AuthUser} from './types/authTypes';
+import type {AuthUser} from '../types/authTypes';
 
 const authSessionService = 'personal-advisor.auth-session';
 const pinService = 'personal-advisor.pin';
+const biometricPinService = 'personal-advisor.biometric-pin';
 
 type StoredAuthSession = {
   accessToken: string;
+  email?: string;
   refreshToken: string;
   userId: number;
   username: string;
@@ -20,6 +22,7 @@ type AuthTokens = {
 export async function saveAuthSession(user: AuthUser): Promise<void> {
   const session: StoredAuthSession = {
     accessToken: user.accessToken,
+    email: user.email,
     refreshToken: user.refreshToken,
     userId: user.id,
     username: user.username,
@@ -41,6 +44,14 @@ export async function getAuthSession(): Promise<StoredAuthSession | null> {
   }
 
   return JSON.parse(credentials.password);
+}
+
+export async function clearAuthStorage(): Promise<void> {
+  await Promise.all([
+    Keychain.resetGenericPassword({service: authSessionService}),
+    Keychain.resetGenericPassword({service: pinService}),
+    Keychain.resetGenericPassword({service: biometricPinService}),
+  ]);
 }
 
 export async function saveAuthTokens(tokens: AuthTokens): Promise<void> {
@@ -65,6 +76,11 @@ export async function saveAuthTokens(tokens: AuthTokens): Promise<void> {
 
 export async function savePinCode(pin: string): Promise<void> {
   await Keychain.setGenericPassword('pin', pin, {
+    accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+    service: pinService,
+  });
+
+  await Keychain.setGenericPassword('pin', pin, {
     accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE,
     accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
     authenticationPrompt: {
@@ -72,8 +88,16 @@ export async function savePinCode(pin: string): Promise<void> {
       subtitle: 'Use your device unlock to protect app access',
       cancel: 'Cancel',
     },
+    service: biometricPinService,
+  });
+}
+
+export async function getSavedPinCode(): Promise<string | null> {
+  const credentials = await Keychain.getGenericPassword({
     service: pinService,
   });
+
+  return credentials ? credentials.password : null;
 }
 
 export async function getPinWithBiometry(): Promise<string | null> {
@@ -84,7 +108,7 @@ export async function getPinWithBiometry(): Promise<string | null> {
       subtitle: 'Use Face ID or biometrics',
       cancel: 'Cancel',
     },
-    service: pinService,
+    service: biometricPinService,
   });
 
   return credentials ? credentials.password : null;
@@ -93,6 +117,12 @@ export async function getPinWithBiometry(): Promise<string | null> {
 export async function hasSavedPin(): Promise<boolean> {
   return Keychain.hasGenericPassword({
     service: pinService,
+  });
+}
+
+export async function hasBiometricPin(): Promise<boolean> {
+  return Keychain.hasGenericPassword({
+    service: biometricPinService,
   });
 }
 

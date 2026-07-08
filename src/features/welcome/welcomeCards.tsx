@@ -14,7 +14,7 @@ import ProfileIcon from '../../assets/icons/profile.svg';
 import TLogo from '../../assets/icons/t-logo.svg';
 import ThunderIcon from '../../assets/icons/thunder.svg';
 import VLogo from '../../assets/icons/v-logo.svg';
-import type {WelcomeCoin} from './WelcomeFeatureCard';
+import type {WelcomeCoin} from './components/WelcomeFeatureCard';
 
 export type WelcomeCardName = 'one' | 'two' | 'three' | 'four' | 'five';
 

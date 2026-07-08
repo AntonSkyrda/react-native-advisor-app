@@ -2,9 +2,9 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import type {Control, FieldErrors} from 'react-hook-form';
 
-import HidePasswordIcon from '../../assets/icons/hide-password.svg';
-import ShowPasswordIcon from '../../assets/icons/show-password.svg';
-import SignUpIcon from '../../assets/icons/sign-up-icon.svg';
+import HidePasswordIcon from '../../../assets/icons/hide-password.svg';
+import ShowPasswordIcon from '../../../assets/icons/show-password.svg';
+import SignUpIcon from '../../../assets/icons/sign-up-icon.svg';
 import SignUpField from './SignUpField';
 import {
   emailRules,

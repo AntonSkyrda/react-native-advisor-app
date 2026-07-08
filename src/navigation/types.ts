@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Login: undefined;
   Splash: undefined;
   Success: undefined;
+  UnlockPin: undefined;
   Welcome: undefined;
   SignUp: undefined;
 };

@@ -1,29 +1,29 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import PinIcon from '../../assets/icons/pin-icon.svg';
+import PinIcon from '../../../assets/icons/pin-icon.svg';
 import PinDots from './PinDots';
 
 type PinHeaderProps = {
   error?: string;
   pinLength: number;
-  step: 'create' | 'confirm';
+  subtitle: string;
+  title: string;
   valueLength: number;
 };
 
 function PinHeader({
   error,
   pinLength,
-  step,
+  subtitle,
+  title,
   valueLength,
 }: PinHeaderProps): React.JSX.Element {
   return (
     <View style={styles.header}>
       <PinIcon width={49} height={49} />
-      <Text style={styles.title}>
-        {step === 'create' ? 'Create a Pin code' : 'Repeat a Pin code'}
-      </Text>
-      <Text style={styles.subtitle}>enter 5 digit code:</Text>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.subtitle}>{subtitle}</Text>
 
       <PinDots
         hasError={Boolean(error)}

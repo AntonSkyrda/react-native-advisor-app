@@ -5,14 +5,16 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useMutation} from '@tanstack/react-query';
 import {useForm} from 'react-hook-form';
 
-import {loginUser} from '../../features/auth/authApi';
+import {loginUser} from '../api/authApi';
 import {
   getPinWithBiometry,
   getSupportedBiometryLabel,
-  hasSavedPin,
+  hasBiometricPin,
   saveAuthSession,
-} from '../../features/auth/secureAuthStorage';
-import type {RootStackParamList} from '../../navigation/types';
+} from '../storage/secureAuthStorage';
+import {authSessionDetected, authUnlocked} from '../store/authSlice';
+import type {RootStackParamList} from '../../../navigation/types';
+import {useAppDispatch} from '../../../store/hooks';
 import {loginDefaultValues, type LoginFormValues} from './loginForm';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
@@ -21,6 +23,7 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 function useLoginScreen() {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [biometryLabel, setBiometryLabel] = useState<string | null>(null);
   const [hasPin, setHasPin] = useState(false);
@@ -37,6 +40,7 @@ function useLoginScreen() {
     mutationFn: loginUser,
     onSuccess: async user => {
       await saveAuthSession(user);
+      dispatch(authSessionDetected(true));
       navigation.navigate('CreatePin');
     },
   });
@@ -47,7 +51,7 @@ function useLoginScreen() {
     async function loadBiometryState() {
       const [label, savedPin] = await Promise.all([
         getSupportedBiometryLabel(),
-        hasSavedPin(),
+        hasBiometricPin(),
       ]);
 
       if (isMounted) {
@@ -69,7 +73,12 @@ function useLoginScreen() {
   }, []);
 
   const goBack = useCallback(() => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.replace('Welcome');
   }, [navigation]);
 
   const createAccount = useCallback(() => {
@@ -95,6 +104,7 @@ function useLoginScreen() {
       const pin = await getPinWithBiometry();
 
       if (pin) {
+        dispatch(authUnlocked());
         navigation.reset({
           index: 0,
           routes: [{name: 'Success'}],
@@ -103,7 +113,7 @@ function useLoginScreen() {
     } catch {
       Alert.alert('Biometric login failed', 'Try again or use password login.');
     }
-  }, [navigation]);
+  }, [dispatch, navigation]);
 
   return {
     biometryLabel,

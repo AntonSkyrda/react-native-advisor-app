@@ -2,8 +2,10 @@ import {useCallback, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-import {savePinCode} from '../../features/auth/secureAuthStorage';
-import type {RootStackParamList} from '../../navigation/types';
+import type {RootStackParamList} from '../../../navigation/types';
+import {useAppDispatch} from '../../../store/hooks';
+import {savePinCode} from '../storage/secureAuthStorage';
+import {authUnlocked} from '../store/authSlice';
 
 type CreatePinScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -13,6 +15,7 @@ type CreatePinScreenNavigationProp = NativeStackNavigationProp<
 const pinLength = 5;
 
 function useCreatePinScreen() {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation<CreatePinScreenNavigationProp>();
   const [confirmedPin, setConfirmedPin] = useState('');
   const [error, setError] = useState<string>();
@@ -21,7 +24,12 @@ function useCreatePinScreen() {
   const [step, setStep] = useState<'create' | 'confirm'>('create');
 
   const goBack = useCallback(() => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.replace('Welcome');
   }, [navigation]);
 
   const resetConfirmation = useCallback(() => {
@@ -83,6 +91,7 @@ function useCreatePinScreen() {
 
     try {
       await savePinCode(pin);
+      dispatch(authUnlocked());
       navigation.reset({
         index: 0,
         routes: [{name: 'Success'}],
@@ -92,7 +101,7 @@ function useCreatePinScreen() {
     } finally {
       setIsSaving(false);
     }
-  }, [confirmedPin, navigation, pin, step]);
+  }, [confirmedPin, dispatch, navigation, pin, step]);
 
   return {
     appendDigit,

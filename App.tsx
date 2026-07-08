@@ -3,26 +3,33 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
 import {
   asyncStoragePersister,
   queryClient,
 } from './src/lib/queryClient';
 import AppNavigator from './src/navigation/AppNavigator';
+import {persistor, store} from './src/store/store';
 
 function App(): React.JSX.Element {
   return (
     <GestureHandlerRootView style={styles.container}>
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{persister: asyncStoragePersister}}>
-        <SafeAreaProvider>
-          <View style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-            <AppNavigator />
-          </View>
-        </SafeAreaProvider>
-      </PersistQueryClientProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{persister: asyncStoragePersister}}>
+            <SafeAreaProvider>
+              <View style={styles.container}>
+                <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+                <AppNavigator />
+              </View>
+            </SafeAreaProvider>
+          </PersistQueryClientProvider>
+        </PersistGate>
+      </Provider>
     </GestureHandlerRootView>
   );
 }

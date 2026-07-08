@@ -9,7 +9,7 @@ import {
 import {
   getAuthSession,
   saveAuthTokens,
-} from '../features/auth/secureAuthStorage';
+} from '../features/auth/storage/secureAuthStorage';
 import type {RefreshResponse} from '../features/auth/types/authTypes';
 
 export const apiClient = axios.create({

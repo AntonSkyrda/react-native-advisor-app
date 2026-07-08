@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import SignUpCard from './sign-up/SignUpCard';
-import SignUpContinueButton from './sign-up/SignUpContinueButton';
-import {BackIcon} from './sign-up/SignUpIcons';
-import useSignUpScreen from './sign-up/useSignUpScreen';
+import SignUpCard from '../sign-up/SignUpCard';
+import SignUpContinueButton from '../sign-up/SignUpContinueButton';
+import {BackIcon} from '../sign-up/SignUpIcons';
+import useSignUpScreen from '../sign-up/useSignUpScreen';
 
 function SignUpScreen(): React.JSX.Element {
   const {

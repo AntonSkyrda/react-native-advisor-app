@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import {BackIcon} from './sign-up/SignUpIcons';
-import LoginCard from './login/LoginCard';
-import useLoginScreen from './login/useLoginScreen';
+import LoginCard from '../login/LoginCard';
+import useLoginScreen from '../login/useLoginScreen';
+import {BackIcon} from '../sign-up/SignUpIcons';
 
 function LoginScreen(): React.JSX.Element {
   const {

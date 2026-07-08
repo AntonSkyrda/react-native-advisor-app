@@ -1,8 +1,8 @@
 import {AxiosError} from 'axios';
 
-import {AUTH_TOKEN_EXPIRES_IN_MINS} from '../../config/apiConfig';
-import {apiClient} from '../../lib/apiClient';
-import type {AuthUser, LoginPayload} from './types/authTypes';
+import {AUTH_TOKEN_EXPIRES_IN_MINS} from '../../../config/apiConfig';
+import {apiClient} from '../../../lib/apiClient';
+import type {AuthUser, LoginPayload} from '../types/authTypes';
 
 export async function loginUser(payload: LoginPayload): Promise<AuthUser> {
   try {

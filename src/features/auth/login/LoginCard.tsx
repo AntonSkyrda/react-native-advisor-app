@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import HidePasswordIcon from '../../../assets/icons/hide-password.svg';
 import ShowPasswordIcon from '../../../assets/icons/show-password.svg';
 import SignInIcon from '../../../assets/icons/sign-in-icon.svg';
-import PrimaryButton from '../../../components/PrimaryButton';
+import PrimaryButton from '../../../shared/components/PrimaryButton';
 import LoginField from './LoginField';
 import type {LoginFormValues} from './loginForm';
 

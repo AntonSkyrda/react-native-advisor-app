@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import PrimaryButton from '../../../components/PrimaryButton';
+import PrimaryButton from '../../../shared/components/PrimaryButton';
 
 type SignUpContinueButtonProps = {
   disabled: boolean;

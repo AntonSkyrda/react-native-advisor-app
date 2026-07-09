@@ -1,10 +1,5 @@
-import React, {useCallback} from 'react';
-import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
-import {
-  CommonActions,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import BeforeYouStart from '../components/BeforeYouStart';
@@ -14,20 +9,8 @@ import PersonalAdvisorCard from '../components/PersonalAdvisorCard';
 import useHomeScreen from '../hooks/useHomeScreen';
 
 function HomeScreen(): React.JSX.Element {
-  const navigation = useNavigation();
-  const {posts, postsError, postsLoading, userName} = useHomeScreen();
-
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBarStyle('light-content');
-      StatusBar.setBackgroundColor('#FF873D');
-
-      return () => {
-        StatusBar.setBarStyle('dark-content');
-        StatusBar.setBackgroundColor('#FFFFFF');
-      };
-    }, []),
-  );
+  const {handlePostPress, posts, postsError, postsLoading, userName} =
+    useHomeScreen();
 
   return (
     <SafeAreaView edges={['left', 'right']} style={styles.screen}>
@@ -41,14 +24,7 @@ function HomeScreen(): React.JSX.Element {
           <HomePostsList
             error={postsError}
             loading={postsLoading}
-            onPostPress={postId =>
-              navigation.dispatch(
-                CommonActions.navigate({
-                  name: 'PostDetails',
-                  params: {postId},
-                }),
-              )
-            }
+            onPostPress={handlePostPress}
             posts={posts}
           />
         </View>

@@ -10,7 +10,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import PrimaryButton from '../../../components/PrimaryButton';
+import PrimaryButton from '../../../shared/components/PrimaryButton';
 import ExistingSessionHeader from '../pin/ExistingSessionHeader';
 import PinHeader from '../pin/PinHeader';
 import PinKeypad from '../pin/PinKeypad';

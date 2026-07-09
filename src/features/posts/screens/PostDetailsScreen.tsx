@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 
 import PostImage from '../../../assets/images/post-image.svg';
-import PrimaryButton from '../../../components/PrimaryButton';
+import PrimaryButton from '../../../shared/components/PrimaryButton';
 import {BackIcon} from '../../auth/sign-up/SignUpIcons';
 import usePostDetailsScreen from '../hooks/usePostDetailsScreen';
 
